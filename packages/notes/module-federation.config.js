@@ -3,4 +3,5 @@ module.exports = {
   exposes: {
     './Module': './src/remote-entry.ts',
   },
+  filename: 'remoteEntry.js',
 };

@@ -13,13 +13,14 @@ import {
   FacebookLoginProvider,
   VKLoginProvider,
 } from '@abacritt/angularx-social-login';
+import { WrapperComponent } from './remote-component';
 
 const google_client_id =
   '468339183665-90enpnkr09043fvb1te8i6d36k1nml59.apps.googleusercontent.com';
 
 const vk_client_id = '51706699';
 @NgModule({
-  declarations: [AppComponent, HeaderComponent],
+  declarations: [AppComponent, HeaderComponent, WrapperComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

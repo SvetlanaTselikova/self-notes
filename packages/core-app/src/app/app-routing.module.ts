@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { WrapperComponent } from './remote-component';
 
 const routes: Routes = [
   {
@@ -9,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'notes',
-    loadChildren: () => import('notes/Module').then((m) => m.RemoteEntryModule),
+    component: WrapperComponent,
   },
 ];
 
