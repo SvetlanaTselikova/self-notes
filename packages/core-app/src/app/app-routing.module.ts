@@ -7,6 +7,10 @@ const routes: Routes = [
     redirectTo: '/login',
     pathMatch: 'full',
   },
+  {
+    path: 'notes',
+    loadChildren: () => import('notes/Module').then((m) => m.RemoteEntryModule),
+  },
 ];
 
 @NgModule({
