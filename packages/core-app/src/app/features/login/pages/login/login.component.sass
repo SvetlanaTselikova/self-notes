@@ -1,19 +1,31 @@
 \:host
   width: 100%
   height: 100%
-  display: flex
-  justify-content: center
+  display: block
   background: #f3e5f5
+  padding-top: 180px
 
 .card
-  margin-top: 180px
-  width: 50%
-  padding: 24px
-  height: 36%
+  width: 35%
+  padding: 32px
+  margin: 0 auto
 
 .button
   font-size: 18px
   padding: 24px
+
+@media (max-width: 768px) 
+  .card
+    width: 80%
+
+  .button
+    font-size: 14px
+    padding: 18px
+
+@media (min-width: 769px)  and ( max-width: 1200px )
+  .card
+    width: 60%
+  
 
 .vk
   background: #1875D1 !important
