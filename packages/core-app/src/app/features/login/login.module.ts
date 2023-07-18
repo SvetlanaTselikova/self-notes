@@ -6,6 +6,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
+import { GoogleLoginComponent, VkLoginComponent } from './components';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 
 @NgModule({
   imports: [
@@ -15,7 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatGridListModule,
     MatIconModule,
+    GoogleSigninButtonModule,
   ],
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, GoogleLoginComponent, VkLoginComponent],
 })
 export class LoginModule {}
