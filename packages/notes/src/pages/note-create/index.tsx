@@ -1,30 +1,45 @@
-import React from 'react';
 import {
   FormControl,
-  InputLabel,
   TextField,
-  Stack,
   Radio,
   RadioGroup,
   FormControlLabel,
   FormLabel,
+  Button,
+  FormHelperText,
 } from '@mui/material';
+import { useFormik } from 'formik';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import * as yup from 'yup';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DayMood, Note } from '../../redux/types';
 
 type CreateProps = {
+  mode: 'create';
+};
+
+type EditProps = {
   data: Note;
   mode: 'edit';
 };
 
-type EditProps = {
-  mode: 'create';
-};
+type FormValues = { date: Date; mood?: DayMood; text: string };
+
+const MAX_TEXT_LENGTH = 256;
+const REQUIRED_TEXT = 'Field is required';
+
+const validationSchema = yup.object({
+  text: yup
+    .string()
+    .max(MAX_TEXT_LENGTH, `Max length is ${MAX_TEXT_LENGTH}`)
+    .required(REQUIRED_TEXT),
+  mood: yup.string().required(REQUIRED_TEXT),
+  date: yup.date().required(REQUIRED_TEXT),
+});
 
 export const NoteCreate = (props: CreateProps | EditProps) => {
   const { mode } = props;
@@ -33,15 +48,62 @@ export const NoteCreate = (props: CreateProps | EditProps) => {
     <h1>{mode === 'edit' ? 'Edit note' : 'Create note'}</h1>
   );
 
+  const getInitialValues = (): FormValues => {
+    if (mode === 'edit') {
+      const { createdAt, mood, text } = props.data;
+      return {
+        date: createdAt,
+        mood,
+        text,
+      };
+    } else
+      return {
+        date: new Date(),
+        mood: undefined,
+        text: '',
+      };
+  };
+
+  const formik = useFormik<FormValues>({
+    initialValues: getInitialValues(),
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
   return (
-    <Stack spacing={4} width={'40%'}>
+    <form onSubmit={formik.handleSubmit} style={{ width: '40%' }}>
       {renderTitle()}
+
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DesktopDatePicker label="Date" />
+        <DatePicker
+          label="Date"
+          slotProps={{
+            textField: {
+              fullWidth: true,
+              error: formik.touched.date && Boolean(formik.errors.date),
+              helperText:
+                formik.touched.date && formik.errors.date ? (
+                  <>{formik.errors.date}</>
+                ) : null,
+              onBlur: formik.handleBlur,
+            },
+          }}
+          sx={{ mb: 3 }}
+          value={formik.values.date}
+          onChange={(value) => formik.setFieldValue('date', value)}
+        />
       </LocalizationProvider>
-      <FormControl>
+      <FormControl fullWidth sx={{ mb: 3 }}>
         <FormLabel>Your mood</FormLabel>
-        <RadioGroup aria-label="icons" name="icons">
+
+        <RadioGroup
+          name="mood"
+          value={formik.values.mood}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        >
           <FormControlLabel
             value={DayMood.good}
             control={
@@ -73,8 +135,27 @@ export const NoteCreate = (props: CreateProps | EditProps) => {
             label="Bad"
           />
         </RadioGroup>
+        {formik.touched.mood && Boolean(formik.errors.mood) && (
+          <FormHelperText error>{formik.errors.mood}</FormHelperText>
+        )}
       </FormControl>
-      <TextField id="text" label="How do you feel?" multiline rows={3} />
-    </Stack>
+      <TextField
+        id="text"
+        label="How do you feel?"
+        multiline
+        rows={3}
+        fullWidth
+        sx={{ mb: 3 }}
+        name="text"
+        value={formik.values.text}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.text && Boolean(formik.errors.text)}
+        helperText={formik.touched.text && formik.errors.text}
+      />
+      <Button variant="contained" type="submit">
+        Save
+      </Button>
+    </form>
   );
 };

@@ -25,7 +25,6 @@
     "@nx/react": "^16.5.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@reduxjs/toolkit": "^1.9.5",
-    "@typescript-eslint/parser": "^6.2.0",
     "date-fns": "^2.30.0",
     "formik": "^2.4.2",
     "react": "^18.2.0",
@@ -34,6 +33,7 @@
     "react-refresh": "^0.14.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "yup": "^1.2.0",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
