@@ -1,15 +1,22 @@
 import React from 'react';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
+import {
+  ListItemIcon,
+  ListItemText,
+  ListItem,
+  ListItemButton,
+  Divider,
+  IconButton,
+} from '@mui/material';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
-import Divider from '@mui/material/Divider';
 
 import { DayMood, Note } from '../../redux/types';
 import { format } from 'date-fns';
+import { useDeleteNoteMutation } from '../../redux';
+import { ActionStatusSnackbar } from '../action-status-snackbar';
 
 type Props = {
   note: Note;
@@ -23,11 +30,29 @@ const IconMoodMap = {
 
 export const NoteCard = (props: Props) => {
   const { id, text, date, mood } = props.note;
+  const [deleteNote, { isError, isLoading: isDeleting }] =
+    useDeleteNoteMutation();
+
+  const handleDeleteNote = async () => {
+    await deleteNote(id);
+  };
 
   return (
-    <React.Fragment>
-      {' '}
-      <ListItem disablePadding key={id}>
+    <React.Fragment key={id}>
+      <ActionStatusSnackbar isError={isError} isLoading={isDeleting} />
+      <ListItem
+        disablePadding
+        secondaryAction={
+          <React.Fragment>
+            <IconButton>
+              <EditIcon />
+            </IconButton>
+            <IconButton disabled={isDeleting} onClick={handleDeleteNote}>
+              <DeleteIcon />
+            </IconButton>
+          </React.Fragment>
+        }
+      >
         <ListItemButton>
           <ListItemIcon>{IconMoodMap[mood]}</ListItemIcon>
           <ListItemText

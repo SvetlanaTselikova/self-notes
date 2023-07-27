@@ -43,7 +43,7 @@ export const notesApi = createApi({
       },
       transformResponse: (response: { data: Note }) => response.data,
     }),
-    deleteNote: builder.mutation<null, string>({
+    deleteNote: builder.mutation<null, number>({
       query(id) {
         return {
           url: `notes/${id}`,

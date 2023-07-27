@@ -7,6 +7,7 @@ import { NoteCreate, NoteEdit } from './pages';
 
 import HttpRequestMock from 'http-request-mock';
 import { DayMood, Note } from './redux/types';
+import NotesList from './pages/notes-list';
 const mocker = HttpRequestMock.setup();
 
 const API_URL = 'http://localhost:8000/api';
@@ -38,11 +39,12 @@ mocker.get(`${API_URL}/notes/1`, { data: MOCK_NOTES[0] });
 
 mocker.post(`${API_URL}/notes`, { data: MOCK_NOTES[0] });
 mocker.patch(`${API_URL}/notes`, { data: MOCK_NOTES[0] });
+mocker.delete(`${API_URL}/notes/1`, {});
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <Provider store={store}>
-      <NoteCreate />
+      <NotesList />
     </Provider>
   </StrictMode>
 );

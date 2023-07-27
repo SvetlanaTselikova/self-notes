@@ -5,9 +5,7 @@ import {
   RadioGroup,
   FormControlLabel,
   FormLabel,
-  Snackbar,
   FormHelperText,
-  Alert,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
@@ -20,8 +18,7 @@ import * as yup from 'yup';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DayMood, Note, NoteFormValues } from '../../redux/types';
-import { useEffect, useState } from 'react';
-import usePrevious from '../../utils/hooks/use-previous';
+import { ActionStatusSnackbar } from '../action-status-snackbar';
 
 type CommonProps = { isSaving: boolean; saveError: boolean };
 
@@ -50,9 +47,6 @@ const validationSchema = yup.object({
 
 export const NoteForm = (props: CreateProps | EditProps) => {
   const { mode, onSubmit, isSaving, saveError } = props;
-  const [saveStatus, setSaveStatus] = useState<
-    'error' | 'success' | undefined
-  >();
 
   const renderTitle = () => (
     <h1>{mode === 'edit' ? 'Edit note' : 'Create note'}</h1>
@@ -74,18 +68,6 @@ export const NoteForm = (props: CreateProps | EditProps) => {
       };
   };
 
-  const isSavingPrev = usePrevious(isSaving);
-
-  useEffect(() => {
-    if (saveError) {
-      setSaveStatus('error');
-    } else {
-      if (isSavingPrev && !isSaving) {
-        setSaveStatus('success');
-      }
-    }
-  }, [saveError, isSaving]);
-
   const formik = useFormik<NoteFormValues>({
     initialValues: getInitialValues(),
     validationSchema: validationSchema,
@@ -98,20 +80,7 @@ export const NoteForm = (props: CreateProps | EditProps) => {
 
   return (
     <form onSubmit={formik.handleSubmit} style={{ width: '40%' }}>
-      <Snackbar
-        open={!!saveStatus}
-        autoHideDuration={6000}
-        onClose={() => setSaveStatus(undefined)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        {saveStatus && (
-          <Alert severity={saveStatus}>
-            {saveStatus === 'success'
-              ? 'Note was saved successfully'
-              : 'Ooops, something went wrong...'}
-          </Alert>
-        )}
-      </Snackbar>
+      <ActionStatusSnackbar isError={saveError} isLoading={isSaving} />
       {renderTitle()}
 
       <LocalizationProvider dateAdapter={AdapterDateFns}>
