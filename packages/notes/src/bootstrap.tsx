@@ -16,22 +16,19 @@ const MOCK_NOTES: Note[] = [
     id: 1,
     text: 'test my text bla blad dddd s s ss s d d d d dssssss ssss',
     mood: DayMood.good,
-    createdAt: new Date('2022-08-08 12:00'),
-    updatedAt: new Date('2022-08-08 12:00'),
+    date: new Date('2022-08-08 12:00'),
   },
   {
     id: 2,
     text: 'ttetetetetetetetete etetegege egegeggege',
     mood: DayMood.normal,
-    createdAt: new Date('2022-08-07 12:00'),
-    updatedAt: new Date('2022-08-07 12:00'),
+    date: new Date('2022-08-07 12:00'),
   },
   {
     id: 3,
     text: 'ttetetetetetetetete etetegege egegeggeges s s s s s s s ssssss ',
     mood: DayMood.bad,
-    createdAt: new Date('2022-08-06 12:00'),
-    updatedAt: new Date('2022-08-06 12:00'),
+    date: new Date('2022-08-06 12:00'),
   },
 ];
 
@@ -39,10 +36,13 @@ mocker.get(`${API_URL}/notes`, { data: MOCK_NOTES });
 
 mocker.get(`${API_URL}/notes/1`, { data: MOCK_NOTES[0] });
 
+mocker.post(`${API_URL}/notes`, { data: MOCK_NOTES[0] });
+mocker.patch(`${API_URL}/notes`, { data: MOCK_NOTES[0] });
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <Provider store={store}>
-      <NoteEdit />
+      <NoteCreate />
     </Provider>
   </StrictMode>
 );

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
-import { Note } from '../types';
+import { Note, NoteFormValues } from '../types';
 
 export const notesApi = createApi({
   reducerPath: 'notesApi',
@@ -21,57 +21,44 @@ export const notesApi = createApi({
       transformResponse: (response: { data: Note }, _args, _meta) =>
         response.data,
     }),
-    // createNote: builder.mutation<Note, FormData>({
-    //   query(data) {
-    //     return {
-    //       url: "products",
-    //       method: "POST",
-    //       credentials: "include",
-    //       body: data,
-    //     };
-    //   },
-    //   invalidatesTags: [{ type: "Products", id: "LIST" }],
-    //   transformResponse: (response: { data: { product: Note } }) =>
-    //     response.data.product,
-    // }),
-    // updateNote: builder.mutation<
-    //   Note,
-    //   { id: string; formData: FormData }
-    // >({
-    //   query({ id, formData }) {
-    //     return {
-    //       url: `products/${id}`,
-    //       method: "PATCH",
-    //       credentials: "include",
-    //       body: formData,
-    //     };
-    //   },
-    //   invalidatesTags: (result, _error, { id }) =>
-    //     result
-    //       ? [
-    //           { type: "Products", id },
-    //           { type: "Products", id: "LIST" },
-    //         ]
-    //       : [{ type: "Products", id: "LIST" }],
-    //   transformResponse: (response: { data: { product: Note } }) =>
-    //     response.data.product,
-    // }),
-    // deleteNote: builder.mutation<null, string>({
-    //   query(id) {
-    //     return {
-    //       url: `products/${id}`,
-    //       method: "DELETE",
-    //       credentials: "include",
-    //     };
-    //   },
-    //   invalidatesTags: [{ type: "Products", id: "LIST" }],
-    // }),
+    createNote: builder.mutation<Note, NoteFormValues>({
+      query(data) {
+        return {
+          url: 'notes',
+          method: 'POST',
+          credentials: 'include',
+          body: data,
+        };
+      },
+      transformResponse: (response: { data: Note }) => response.data,
+    }),
+    updateNote: builder.mutation<Note, Note>({
+      query(data) {
+        return {
+          url: `notes/${data.id}`,
+          method: 'PATCH',
+          credentials: 'include',
+          body: data,
+        };
+      },
+      transformResponse: (response: { data: Note }) => response.data,
+    }),
+    deleteNote: builder.mutation<null, string>({
+      query(id) {
+        return {
+          url: `notes/${id}`,
+          method: 'DELETE',
+          credentials: 'include',
+        };
+      },
+    }),
   }),
 });
 
 export const {
-  // useCreateNoteMutation,
-  // useDeleteNoteMutation,
+  useCreateNoteMutation,
+  useDeleteNoteMutation,
+  useUpdateNoteMutation,
   useGetNoteQuery,
   useGetNotesQuery,
   usePrefetch,

@@ -22,7 +22,7 @@ const IconMoodMap = {
 };
 
 export const NoteCard = (props: Props) => {
-  const { id, text, createdAt, mood } = props.note;
+  const { id, text, date, mood } = props.note;
 
   return (
     <React.Fragment>
@@ -31,7 +31,7 @@ export const NoteCard = (props: Props) => {
         <ListItemButton>
           <ListItemIcon>{IconMoodMap[mood]}</ListItemIcon>
           <ListItemText
-            primary={format(new Date(createdAt), 'yyyy-MM-dd hh:mm')}
+            primary={format(new Date(date), 'yyyy-MM-dd hh:mm')}
             secondary={text}
           />
         </ListItemButton>

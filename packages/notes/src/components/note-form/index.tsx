@@ -5,9 +5,12 @@ import {
   RadioGroup,
   FormControlLabel,
   FormLabel,
-  Button,
+  Snackbar,
   FormHelperText,
+  Alert,
 } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
 import { useFormik } from 'formik';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
@@ -16,18 +19,22 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import * as yup from 'yup';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DayMood, Note } from '../../redux/types';
+import { DayMood, Note, NoteFormValues } from '../../redux/types';
+import { useEffect, useState } from 'react';
+import usePrevious from '../../utils/hooks/use-previous';
+
+type CommonProps = { isSaving: boolean; saveError: boolean };
 
 type CreateProps = {
+  onSubmit: (data: NoteFormValues) => Promise<void>;
   mode: 'create';
-};
+} & CommonProps;
 
 type EditProps = {
+  onSubmit: (data: Note) => Promise<void>;
   data: Note;
   mode: 'edit';
-};
-
-type FormValues = { date: Date; mood?: DayMood; text: string };
+} & CommonProps;
 
 const MAX_TEXT_LENGTH = 256;
 const REQUIRED_TEXT = 'Field is required';
@@ -42,38 +49,69 @@ const validationSchema = yup.object({
 });
 
 export const NoteForm = (props: CreateProps | EditProps) => {
-  const { mode } = props;
+  const { mode, onSubmit, isSaving, saveError } = props;
+  const [saveStatus, setSaveStatus] = useState<
+    'error' | 'success' | undefined
+  >();
 
   const renderTitle = () => (
     <h1>{mode === 'edit' ? 'Edit note' : 'Create note'}</h1>
   );
 
-  const getInitialValues = (): FormValues => {
+  const getInitialValues = (): NoteFormValues => {
     if (mode === 'edit') {
-      const { createdAt, mood, text } = props.data;
+      const { date, mood, text } = props.data;
       return {
-        date: new Date(createdAt),
+        date: new Date(date),
         mood,
         text,
       };
     } else
       return {
         date: new Date(),
-        mood: undefined,
+        mood: DayMood.good,
         text: '',
       };
   };
 
-  const formik = useFormik<FormValues>({
+  const isSavingPrev = usePrevious(isSaving);
+
+  useEffect(() => {
+    if (saveError) {
+      setSaveStatus('error');
+    } else {
+      if (isSavingPrev && !isSaving) {
+        setSaveStatus('success');
+      }
+    }
+  }, [saveError, isSaving]);
+
+  const formik = useFormik<NoteFormValues>({
     initialValues: getInitialValues(),
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      if (mode === 'edit') {
+        await onSubmit({ id: props.data.id, ...values });
+      } else await onSubmit(values);
     },
   });
 
   return (
     <form onSubmit={formik.handleSubmit} style={{ width: '40%' }}>
+      <Snackbar
+        open={!!saveStatus}
+        autoHideDuration={6000}
+        onClose={() => setSaveStatus(undefined)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        {saveStatus && (
+          <Alert severity={saveStatus}>
+            {saveStatus === 'success'
+              ? 'Note was saved successfully'
+              : 'Ooops, something went wrong...'}
+          </Alert>
+        )}
+      </Snackbar>
       {renderTitle()}
 
       <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -93,9 +131,10 @@ export const NoteForm = (props: CreateProps | EditProps) => {
           sx={{ mb: 3 }}
           value={formik.values.date}
           onChange={(value) => formik.setFieldValue('date', value)}
+          disabled={formik.isSubmitting}
         />
       </LocalizationProvider>
-      <FormControl fullWidth sx={{ mb: 3 }}>
+      <FormControl fullWidth sx={{ mb: 3 }} disabled={formik.isSubmitting}>
         <FormLabel>Your mood</FormLabel>
 
         <RadioGroup
@@ -147,15 +186,22 @@ export const NoteForm = (props: CreateProps | EditProps) => {
         fullWidth
         sx={{ mb: 3 }}
         name="text"
+        disabled={formik.isSubmitting}
         value={formik.values.text}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         error={formik.touched.text && Boolean(formik.errors.text)}
         helperText={formik.touched.text && formik.errors.text}
       />
-      <Button variant="contained" type="submit">
-        Save
-      </Button>
+      <LoadingButton
+        loading={isSaving}
+        loadingPosition="start"
+        startIcon={<SaveIcon />}
+        variant="contained"
+        type="submit"
+      >
+        <span>Save</span>
+      </LoadingButton>
     </form>
   );
 };
