@@ -1,27 +1,26 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { Note } from "../types";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+import { Note } from '../types';
 
 export const notesApi = createApi({
-  reducerPath: "notesApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/" }),
+  reducerPath: 'notesApi',
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api/' }),
   // tagTypes: ["Products"],
   endpoints: (builder) => ({
-    getNotes: builder.query<{[key: string]:Note}, void>({
-      query: () =>"notes",
-      transformResponse: (response: { data:  Note[] }) =>
-        response.data.reduce((acum, item) => ({...acum, [item.id]: item}), {}),
+    getNotes: builder.query<{ [key: string]: Note }, void>({
+      query: () => 'notes',
+      transformResponse: (response: { data: Note[] }) =>
+        response.data.reduce(
+          (acum, item) => ({ ...acum, [item.id]: item }),
+          {}
+        ),
     }),
-    // getNote: builder.query<Note, string>({
-    //   query(id) {
-    //     return `products/${id}`;
-    //   },
-    //   transformResponse: (
-    //     response: { data: { product: Note } },
-    //     _args,
-    //     _meta
-    //   ) => response.data.product,
-    //   providesTags: (_result, _error, id) => [{ type: "Products", id }],
-    // }),
+    getNote: builder.query<Note, string>({
+      query(id) {
+        return `notes/${id}`;
+      },
+      transformResponse: (response: { data: Note }, _args, _meta) =>
+        response.data,
+    }),
     // createNote: builder.mutation<Note, FormData>({
     //   query(data) {
     //     return {
@@ -73,8 +72,7 @@ export const notesApi = createApi({
 export const {
   // useCreateNoteMutation,
   // useDeleteNoteMutation,
-  // useGetNoteQuery,
+  useGetNoteQuery,
   useGetNotesQuery,
   usePrefetch,
 } = notesApi;
-

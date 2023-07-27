@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom/client';
 import App from './app/app';
 import { Provider } from 'react-redux';
 import { store } from './redux';
-import { NoteCreate } from './pages';
+import { NoteCreate, NoteEdit } from './pages';
 
 import HttpRequestMock from 'http-request-mock';
 import { DayMood, Note } from './redux/types';
@@ -37,10 +37,12 @@ const MOCK_NOTES: Note[] = [
 
 mocker.get(`${API_URL}/notes`, { data: MOCK_NOTES });
 
+mocker.get(`${API_URL}/notes/1`, { data: MOCK_NOTES[0] });
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <Provider store={store}>
-      <NoteCreate mode="create" />
+      <NoteEdit />
     </Provider>
   </StrictMode>
 );

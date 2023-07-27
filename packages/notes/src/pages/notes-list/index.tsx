@@ -1,6 +1,5 @@
 import { useGetNotesQuery } from '../../redux';
-import Alert from '@mui/material/Alert';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Alert, CircularProgress } from '@mui/material';
 import { NoteCard } from '../../components/note-card';
 import List from '@mui/material/List';
 
