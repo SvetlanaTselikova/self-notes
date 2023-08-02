@@ -9,17 +9,11 @@ import {
   templateUrl: './vk-login.component.html',
   styleUrls: ['./vk-login.component.sass'],
 })
-export class VkLoginComponent implements OnInit {
+export class VkLoginComponent {
   socialUser!: SocialUser;
   isLoggedin?: boolean;
   constructor(private socialAuthService: SocialAuthService) {}
-  ngOnInit() {
-    this.socialAuthService.authState.subscribe((user) => {
-      this.socialUser = user;
-      this.isLoggedin = user != null;
-      console.log(this.socialUser);
-    });
-  }
+
   loginWithVk(): void {
     this.socialAuthService.signIn(VKLoginProvider.PROVIDER_ID);
   }
