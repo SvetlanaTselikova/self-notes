@@ -3,7 +3,7 @@ import { Alert, CircularProgress } from '@mui/material';
 import { NoteCard } from '../../components/note-card';
 import List from '@mui/material/List';
 
-const NotesList = () => {
+export const NotesList = () => {
   const { data, isLoading, error } = useGetNotesQuery();
 
   return (
@@ -22,5 +22,3 @@ const NotesList = () => {
     </div>
   );
 };
-
-export default NotesList;

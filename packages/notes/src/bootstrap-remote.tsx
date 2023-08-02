@@ -1,12 +1,11 @@
 import { StrictMode } from 'react';
-import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './redux';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { NoteCreate, NoteEdit } from './pages';
 
 import HttpRequestMock from 'http-request-mock';
 import { DayMood, Note } from './redux/types';
-import { NotesList, NoteCreate, NoteEdit } from './pages';
+import { NotesList } from './pages';
 const mocker = HttpRequestMock.setup();
 
 const API_URL = 'http://localhost:8000/api';
@@ -40,22 +39,31 @@ mocker.post(`${API_URL}/notes`, { data: MOCK_NOTES[0] });
 mocker.patch(`${API_URL}/notes`, { data: MOCK_NOTES[0] });
 mocker.delete(`${API_URL}/notes/1`, {});
 
-const router = createBrowserRouter([
-  {
-    path: '/list',
-    element: <NotesList />,
-  },
-  {
-    path: '/create',
-    element: <NoteCreate />,
-  },
-  { path: '/edit/:noteId', element: <NoteEdit /> },
-]);
+type Props = {
+  page: 'edit' | 'list' | 'create';
+};
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </StrictMode>
-);
+export function App(props: Props) {
+  const { page } = props;
+  const renderPage = () => {
+    if (page === 'edit') {
+      return <NoteEdit />;
+    }
+
+    if (page === 'create') {
+      return <NoteCreate />;
+    }
+
+    if (page === 'list') {
+      return <NotesList />;
+    }
+  };
+
+  return (
+    <StrictMode>
+      <Provider store={store}>{renderPage()}</Provider>
+    </StrictMode>
+  );
+}
+
+export default App;

@@ -18,7 +18,7 @@ const containerElementName = 'reactApp';
     <span #${containerElementName}></span>
   </h2>`,
 })
-export class WrapperComponent implements AfterContentInit {
+export class RemoteComponent implements AfterContentInit {
   @ViewChild(containerElementName, { static: true }) containerRef!: ElementRef;
   vc!: ElementRef;
   root!: any;
@@ -27,11 +27,11 @@ export class WrapperComponent implements AfterContentInit {
 
   async ngAfterContentInit() {
     this.root = createRoot(this.containerRef.nativeElement);
+    const pageName = this.route.snapshot.data['page'];
 
     try {
       import('notes/Module').then((val) => {
-        console.log(val);
-        this.root.render(React.createElement(val.default));
+        this.root.render(React.createElement(val.default, { page: pageName }));
       });
     } catch (error) {
       console.log('Erorr', error);

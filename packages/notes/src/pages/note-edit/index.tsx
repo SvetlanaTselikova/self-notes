@@ -3,10 +3,12 @@ import { Alert, CircularProgress } from '@mui/material';
 import { NoteForm } from '../../components';
 import { useGetNoteQuery, useUpdateNoteMutation } from '../../redux';
 import { Note } from '../../redux/types';
+import { Routes, Route, useParams } from 'react-router-dom';
 
 export const NoteEdit = () => {
-  const noteId = '1';
-  const { data, isLoading, error } = useGetNoteQuery(noteId);
+  const noteId =
+    useParams().noteId || window.location.pathname.split('/')?.pop();
+  const { data, isLoading, error } = useGetNoteQuery(noteId!);
   const [updateNote, { isLoading: isSaving, isError: saveError }] =
     useUpdateNoteMutation();
 

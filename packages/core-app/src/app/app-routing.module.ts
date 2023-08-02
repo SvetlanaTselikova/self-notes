@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { WrapperComponent } from './remote-component';
+import { RemoteComponent } from './remote-component';
 
 const routes: Routes = [
   {
@@ -9,8 +9,25 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'notes',
-    component: WrapperComponent,
+    path: 'list',
+    component: RemoteComponent,
+    data: {
+      page: 'list',
+    },
+  },
+  {
+    path: 'create',
+    component: RemoteComponent,
+    data: {
+      page: 'create',
+    },
+  },
+  {
+    path: 'edit/:noteId',
+    component: RemoteComponent,
+    data: {
+      page: 'edit',
+    },
   },
 ];
 

@@ -10,17 +10,16 @@ import {
   SocialLoginModule,
   SocialAuthServiceConfig,
   GoogleLoginProvider,
-  FacebookLoginProvider,
   VKLoginProvider,
 } from '@abacritt/angularx-social-login';
-import { WrapperComponent } from './remote-component';
+import { RemoteComponent } from './remote-component';
 
 const google_client_id =
   '468339183665-90enpnkr09043fvb1te8i6d36k1nml59.apps.googleusercontent.com';
 
 const vk_client_id = '51706699';
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, WrapperComponent],
+  declarations: [AppComponent, HeaderComponent, RemoteComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
