@@ -7,6 +7,7 @@ import {
   UsePipes,
   Body,
   Get,
+  UseGuards,
 } from '@nestjs/common';
 import { Notes } from '@self-notes-frontend/database';
 import { NotesService } from '../services';
@@ -14,8 +15,12 @@ import { ExistValidationPipe } from '../pipes/exist-validation.pipe';
 import { CreateNoteDto, UpdateNoteDto } from '../dto';
 import { ResourceCntroller } from '../types';
 import { Paginate, PaginateQuery } from 'nestjs-paginate';
+import { PermissionGuard } from '../../permissions/guards/permission.guard';
+import { Api } from '../decorators/api';
 
+@Api(Notes)
 @Controller('notes')
+@UseGuards(PermissionGuard)
 export class NotesController implements ResourceCntroller<Notes> {
   constructor(public service: NotesService) {}
 

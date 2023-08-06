@@ -57,6 +57,6 @@ export abstract class ResourceService<Entity extends ObjectLiteral> {
 
   public async remove(id: string): Promise<void> {
     const repository = this.getRepository();
-    await repository.delete(id);
+    // await repository.delete(id);
   }
 }
