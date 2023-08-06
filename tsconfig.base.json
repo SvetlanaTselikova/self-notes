@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {},
+    "paths": {
+      "@self-notes-frontend/database": ["libs/database/src/index.ts"]
+    },
     "noImplicitAny": false
   },
   "exclude": ["node_modules", "tmp"]

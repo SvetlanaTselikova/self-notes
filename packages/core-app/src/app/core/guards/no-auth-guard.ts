@@ -10,7 +10,6 @@ export const noAuthGuard = () => {
   return authService.isLoggedin.pipe(
     filter((value) => value !== null),
     map((isLoggedin) => {
-      console.log(isLoggedin);
       if (isLoggedin) {
         return true;
       } else {

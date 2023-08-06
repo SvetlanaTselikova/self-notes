@@ -26,6 +26,7 @@ export class AuthService {
         tap((user) => {
           if (user) {
             window.sessionStorage.setItem(USER_INFO_KEY, JSON.stringify(user));
+            console.log(user);
 
             this.socialUser.next(user);
             this.isLoggedin.next(user != null);
