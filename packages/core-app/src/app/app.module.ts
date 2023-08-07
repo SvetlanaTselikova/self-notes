@@ -14,7 +14,6 @@ import {
 } from '@abacritt/angularx-social-login';
 import { RemoteComponent } from './remote-component';
 import { CoreModule } from './core/core.module';
-import { AuthService } from './core/services/auth.service';
 
 const google_client_id =
   '468339183665-90enpnkr09043fvb1te8i6d36k1nml59.apps.googleusercontent.com';
@@ -31,28 +30,7 @@ const vk_client_id = '51706699';
     SocialLoginModule,
     CoreModule,
   ],
-  providers: [
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        oneTapEnabled: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(google_client_id),
-          },
-          {
-            id: VKLoginProvider.PROVIDER_ID,
-            provider: new VKLoginProvider(vk_client_id),
-          },
-        ],
-        onError: (err) => {
-          console.error(err);
-        },
-      } as SocialAuthServiceConfig,
-    },
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

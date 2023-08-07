@@ -60,4 +60,9 @@ export class AuthenticationController {
     request.res.setHeader('Set-Cookie', accessTokenCookie);
     return request.user;
   }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Get('check-auth')
+  @HttpCode(200)
+  async checkAuth() {}
 }

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RemoteComponent } from './remote-component';
-import { noAuthGuard } from './core/guards/no-auth-guard';
 import { authGuard } from './core/guards/auth-guard';
 
 const routes: Routes = [
@@ -11,7 +10,6 @@ const routes: Routes = [
     data: {
       page: 'list',
     },
-    canActivate: [noAuthGuard],
   },
   {
     path: 'create',
@@ -19,7 +17,6 @@ const routes: Routes = [
     data: {
       page: 'create',
     },
-    canActivate: [noAuthGuard],
   },
   {
     path: 'edit/:noteId',
@@ -27,7 +24,6 @@ const routes: Routes = [
     data: {
       page: 'edit',
     },
-    canActivate: [noAuthGuard],
   },
 ];
 

@@ -11,6 +11,7 @@ import {
 import { JwtAuthenticationGuard, JwtRefreshGuard } from './guards';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from '@self-notes-frontend/database';
+import { AuthenticationController } from './controllers/auth.controller';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { Users } from '@self-notes-frontend/database';
       }),
     }),
   ],
+  controllers: [AuthenticationController],
   providers: [
     AuthenticationService,
     GoogleAuthenticationService,

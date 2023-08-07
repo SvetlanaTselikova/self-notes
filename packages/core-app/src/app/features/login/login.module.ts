@@ -6,8 +6,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
-import { GoogleLoginComponent, VkLoginComponent } from './components';
-import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
+import { GoogleLoginComponent } from './components';
+import {
+  GoogleLoginProvider,
+  GoogleSigninButtonModule,
+  SocialAuthServiceConfig,
+} from '@abacritt/angularx-social-login';
+
+const google_client_id =
+  '468339183665-90enpnkr09043fvb1te8i6d36k1nml59.apps.googleusercontent.com';
 
 @NgModule({
   imports: [
@@ -19,6 +26,29 @@ import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
     MatIconModule,
     GoogleSigninButtonModule,
   ],
-  declarations: [LoginComponent, GoogleLoginComponent, VkLoginComponent],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        oneTapEnabled: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(google_client_id, {
+              scopes: [
+                'https://www.googleapis.com/auth/userinfo.email',
+                'https://www.googleapis.com/auth/userinfo.profile',
+              ],
+            }),
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        },
+      } as SocialAuthServiceConfig,
+    },
+  ],
+  declarations: [LoginComponent, GoogleLoginComponent],
 })
 export class LoginModule {}

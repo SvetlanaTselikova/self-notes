@@ -27,6 +27,7 @@ export class CreateUsersTable1691141551273 implements MigrationInterface {
           new TableColumn({
             name: 'refresh_token',
             type: 'varchar',
+            isNullable: true,
           }),
           new TableColumn({
             name: 'created_at',

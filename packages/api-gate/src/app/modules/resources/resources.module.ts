@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 
 import { Notes, Users } from '@self-notes-frontend/database';
-import { NotesService } from './services';
+import { NotesService, UsersService } from './services';
 import { NotesController } from './controllers';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PermissionsModule } from '../permissions/permissions.module';
 import { AuthenticationModule } from '../authentication/authentication.module';
+import { UsersController } from './controllers/users.controller';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { AuthenticationModule } from '../authentication/authentication.module';
     PermissionsModule,
     AuthenticationModule,
   ],
-  controllers: [NotesController],
-  providers: [NotesService],
+  controllers: [NotesController, UsersController],
+  providers: [NotesService, UsersService],
 })
 export class ResourcesModule {}

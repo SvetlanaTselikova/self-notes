@@ -20,6 +20,7 @@ export class GoogleAuthenticationService {
   }
 
   async authenticate(token: string) {
+    console.log(token);
     const tokenInfo = await this.oauthClient.getTokenInfo(token);
 
     const email = tokenInfo.email;
