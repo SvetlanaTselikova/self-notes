@@ -1,37 +1,16 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import {
-  IsEmpty,
-  IsNotEmpty,
-  IsEnum,
-  IsString,
-  MaxLength,
-  IsNumber,
-} from 'class-validator';
-import { UserProvider } from '../types';
 
 @Entity()
 export class Users {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @IsNotEmpty()
-  @IsNumber()
-  @Column({
-    name: 'external_id',
-    nullable: false,
-  })
-  externalId: number;
+  @Column({ unique: true })
+  public email: string;
 
-  @IsNotEmpty()
-  @IsEnum(UserProvider)
-  @Column({
-    type: 'enum',
-    enum: UserProvider,
-    nullable: false,
-  })
-  public provider: UserProvider;
+  @Column()
+  public name: string;
 
-  @IsEmpty()
   @Column({
     name: 'created_at',
     type: 'timestamp',
@@ -39,4 +18,9 @@ export class Users {
     default: 'CURRENT_TIMESTAMP',
   })
   public createdAt: Date;
+
+  @Column({
+    name: 'refresh_token',
+  })
+  public currentHashedRefreshToken?: string;
 }

@@ -1,6 +1,7 @@
 import { registerAs } from '@nestjs/config';
 import { config as dotenvConfig } from 'dotenv';
 import { join } from 'path';
+import { DataSource } from 'typeorm';
 
 dotenvConfig({ path: '.env' });
 
@@ -17,4 +18,7 @@ const config = {
   autoLoadEntities: true,
 };
 
-export default registerAs('typeorm', () => config);
+export const configRegister = registerAs('typeorm', () => config);
+
+// @ts-ignore
+export default new DataSource(config);

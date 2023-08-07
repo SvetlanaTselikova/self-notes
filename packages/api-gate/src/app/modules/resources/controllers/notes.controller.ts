@@ -17,9 +17,11 @@ import { ResourceCntroller } from '../types';
 import { Paginate, PaginateQuery } from 'nestjs-paginate';
 import { PermissionGuard } from '../../permissions/guards/permission.guard';
 import { Api } from '../decorators/api';
+import { JwtAuthenticationGuard } from '../../authentication/guards';
 
 @Api(Notes)
 @Controller('notes')
+@UseGuards(JwtAuthenticationGuard)
 @UseGuards(PermissionGuard)
 export class NotesController implements ResourceCntroller<Notes> {
   constructor(public service: NotesService) {}

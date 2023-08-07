@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import config from './config';
+import { configRegister } from './config';
 
 @Module({
   controllers: [],
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [config],
+      load: [configRegister],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
