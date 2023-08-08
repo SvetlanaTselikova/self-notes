@@ -45,8 +45,14 @@ export class GoogleLoginComponent implements OnInit {
             );
           } else return EMPTY;
         }),
-        switchMap(() => from(this.router.navigate(['/list'])))
+        switchMap(() => from(this.router.navigate([this.getRedirectPath()])))
       )
       .subscribe();
+  }
+
+  getRedirectPath() {
+    const urlTree = this.router.parseUrl(this.router.url);
+    const queryParams = urlTree.queryParams;
+    return queryParams?.['redirect'] || '/list';
   }
 }

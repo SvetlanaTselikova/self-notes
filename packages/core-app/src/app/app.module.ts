@@ -5,20 +5,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginModule } from './features';
 import { HeaderComponent } from './layouts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
-import {
-  SocialLoginModule,
-  SocialAuthServiceConfig,
-  GoogleLoginProvider,
-  VKLoginProvider,
-} from '@abacritt/angularx-social-login';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { SocialLoginModule } from '@abacritt/angularx-social-login';
 import { RemoteComponent } from './remote-component';
 import { CoreModule } from './core/core.module';
+import { UserProfileService } from './core/services/user.profile';
+import { fetchUserProfile } from './core/facory/init-user.factory';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 const google_client_id =
   '468339183665-90enpnkr09043fvb1te8i6d36k1nml59.apps.googleusercontent.com';
 
-const vk_client_id = '51706699';
 @NgModule({
   declarations: [AppComponent, HeaderComponent, RemoteComponent],
   imports: [
@@ -30,7 +27,20 @@ const vk_client_id = '51706699';
     SocialLoginModule,
     CoreModule,
   ],
-  providers: [],
+  providers: [
+    UserProfileService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: fetchUserProfile,
+      multi: true,
+      deps: [UserProfileService],
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

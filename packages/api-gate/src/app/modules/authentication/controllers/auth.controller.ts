@@ -65,4 +65,10 @@ export class AuthenticationController {
   @Get('check-auth')
   @HttpCode(200)
   async checkAuth() {}
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Get('whoami')
+  async whoAmI(@Req() request: RequestWithUser) {
+    return request.user;
+  }
 }
