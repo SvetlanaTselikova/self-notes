@@ -12,9 +12,8 @@ import { CoreModule } from './core/core.module';
 import { UserProfileService } from './core/services/user.profile';
 import { fetchUserProfile } from './core/facory/init-user.factory';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
-
-const google_client_id =
-  '468339183665-90enpnkr09043fvb1te8i6d36k1nml59.apps.googleusercontent.com';
+import { AuthModule } from './auth/auth.module';
+import { authConfigFactory } from './core/facory/auth-config.factory';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, RemoteComponent],
@@ -26,6 +25,7 @@ const google_client_id =
     HttpClientModule,
     SocialLoginModule,
     CoreModule,
+    AuthModule.forRoot(authConfigFactory),
   ],
   providers: [
     UserProfileService,

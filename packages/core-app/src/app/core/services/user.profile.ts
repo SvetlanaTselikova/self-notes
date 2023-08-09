@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, tap, catchError, EMPTY } from 'rxjs';
-import { API_URL } from '../constants/api';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,20 +11,18 @@ export class UserProfileService {
   );
   userProfile$: Observable<any> = this.userProfileSubject.asObservable();
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private authService: AuthService) {}
 
   fetchUserProfile() {
-    return this.httpClient
-      .get(`${API_URL}/whoami`, { withCredentials: true })
-      .pipe(
-        tap((user) => {
-          this.userProfileSubject.next(user);
-        }),
-        catchError(() => {
-          this.userProfileSubject.next(null);
-          return EMPTY;
-        })
-      );
+    return this.authService.authenticationControllerWhoAmI().pipe(
+      tap((user) => {
+        this.userProfileSubject.next(user);
+      }),
+      catchError(() => {
+        this.userProfileSubject.next(null);
+        return EMPTY;
+      })
+    );
   }
 
   getCurrentUserProfileValue(): any {

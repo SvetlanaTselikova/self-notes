@@ -5,8 +5,7 @@ import {
 } from '@abacritt/angularx-social-login';
 import { EMPTY, from, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { API_URL } from 'packages/core-app/src/app/core/constants/api';
+import { AuthService } from 'packages/core-app/src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-google-login',
@@ -17,7 +16,7 @@ export class GoogleLoginComponent implements OnInit {
   constructor(
     private socialAuthService: SocialAuthService,
     private router: Router,
-    private httpClient: HttpClient
+    private authService: AuthService
   ) {}
   ngOnInit(): void {
     this.subscribeAuthState();
@@ -34,13 +33,9 @@ export class GoogleLoginComponent implements OnInit {
               )
             ).pipe(
               switchMap((accessToken) =>
-                this.httpClient.post(
-                  `${API_URL}/google-authenticate`,
-                  {
-                    token: accessToken,
-                  },
-                  { withCredentials: true }
-                )
+                this.authService.authenticationControllerAuthenticate({
+                  token: accessToken,
+                })
               )
             );
           } else return EMPTY;
