@@ -1,19 +1,23 @@
 import React from 'react';
 import { Alert, CircularProgress } from '@mui/material';
 import { NoteForm } from '../../components';
-import { useGetNoteQuery, useUpdateNoteMutation } from '../../redux';
-import { Note } from '../../redux/types';
-import { Routes, Route, useParams } from 'react-router-dom';
+import {
+  UpdateNoteDto,
+  useNotesControllerFindAllQuery,
+  useNotesControllerUpdateMutation,
+} from '../../redux';
+import { useParams } from 'react-router-dom';
 
 export const NoteEdit = () => {
   const noteId =
     useParams().noteId || window.location.pathname.split('/')?.pop();
-  const { data, isLoading, error } = useGetNoteQuery(noteId!);
+  const { data, isLoading, error } = useNotesControllerFindAllQuery({});
+  const note = data?.data?.[0];
   const [updateNote, { isLoading: isSaving, isError: saveError }] =
-    useUpdateNoteMutation();
+    useNotesControllerUpdateMutation();
 
-  const handleEditNote = async (data: Note) => {
-    await updateNote(data);
+  const handleEditNote = async (data: UpdateNoteDto) => {
+    await updateNote({ id: String(data.id), updateNoteDto: data });
   };
 
   return (
@@ -22,10 +26,10 @@ export const NoteEdit = () => {
         <Alert severity="error">Oops, somthing went wrong...</Alert>
       ) : isLoading ? (
         <CircularProgress />
-      ) : data ? (
+      ) : note ? (
         <NoteForm
           mode="edit"
-          data={data}
+          data={note}
           onSubmit={handleEditNote}
           isSaving={isSaving}
           saveError={saveError}

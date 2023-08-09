@@ -1,12 +1,14 @@
 import { NoteForm } from '../../components';
-import { useCreateNoteMutation } from '../../redux';
-import { NoteFormValues } from '../../redux/types';
+import { CreateNoteDto, useNotesControllerCreateMutation } from '../../redux';
 
 export const NoteCreate = () => {
-  const [createNote, { isError, isLoading }] = useCreateNoteMutation();
+  const [createNote, { isError, isLoading }] =
+    useNotesControllerCreateMutation();
 
-  const handleAddNote = async (data: NoteFormValues) => {
-    await createNote(data);
+  const handleAddNote = async (data: CreateNoteDto) => {
+    await createNote({
+      createNoteDto: data,
+    });
   };
 
   return (

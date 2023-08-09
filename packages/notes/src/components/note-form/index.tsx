@@ -17,19 +17,20 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import * as yup from 'yup';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DayMood, Note, NoteFormValues } from '../../redux/types';
+import { NoteFormValues } from '../../redux/types';
 import { ActionStatusSnackbar } from '../action-status-snackbar';
+import { CreateNoteDto, Notes, UpdateNoteDto } from '../../redux';
 
 type CommonProps = { isSaving: boolean; saveError: boolean };
 
 type CreateProps = {
-  onSubmit: (data: NoteFormValues) => Promise<void>;
+  onSubmit: (data: CreateNoteDto) => Promise<void>;
   mode: 'create';
 } & CommonProps;
 
 type EditProps = {
-  onSubmit: (data: Note) => Promise<void>;
-  data: Note;
+  onSubmit: (data: UpdateNoteDto) => Promise<void>;
+  data: Notes;
   mode: 'edit';
 } & CommonProps;
 
@@ -54,16 +55,16 @@ export const NoteForm = (props: CreateProps | EditProps) => {
 
   const getInitialValues = (): NoteFormValues => {
     if (mode === 'edit') {
-      const { date, mood, text } = props.data;
+      const { date, dayMood, text } = props.data;
       return {
         date: new Date(date),
-        mood,
+        dayMood,
         text,
       };
     } else
       return {
         date: new Date(),
-        mood: DayMood.good,
+        dayMood: 'good',
         text: '',
       };
   };
@@ -73,8 +74,12 @@ export const NoteForm = (props: CreateProps | EditProps) => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       if (mode === 'edit') {
-        await onSubmit({ id: props.data.id, ...values });
-      } else await onSubmit(values);
+        await onSubmit({
+          id: props.data.id,
+          ...values,
+          date: values.date.toISOString(),
+        });
+      } else await onSubmit({ ...values, date: values.date.toISOString() });
     },
   });
 
@@ -108,12 +113,12 @@ export const NoteForm = (props: CreateProps | EditProps) => {
 
         <RadioGroup
           name="mood"
-          value={formik.values.mood}
+          value={formik.values.dayMood}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         >
           <FormControlLabel
-            value={DayMood.good}
+            value={'good'}
             control={
               <Radio
                 icon={<SentimentVerySatisfiedIcon />}
@@ -123,7 +128,7 @@ export const NoteForm = (props: CreateProps | EditProps) => {
             label="Good"
           />
           <FormControlLabel
-            value={DayMood.normal}
+            value={'normal'}
             control={
               <Radio
                 icon={<SentimentNeutralIcon />}
@@ -133,7 +138,7 @@ export const NoteForm = (props: CreateProps | EditProps) => {
             label="Normal"
           />
           <FormControlLabel
-            value={DayMood.bad}
+            value={'bad'}
             control={
               <Radio
                 icon={<SentimentVeryDissatisfiedIcon />}
@@ -143,8 +148,8 @@ export const NoteForm = (props: CreateProps | EditProps) => {
             label="Bad"
           />
         </RadioGroup>
-        {formik.touched.mood && Boolean(formik.errors.mood) && (
-          <FormHelperText error>{formik.errors.mood}</FormHelperText>
+        {formik.touched.dayMood && Boolean(formik.errors.dayMood) && (
+          <FormHelperText error>{formik.errors.dayMood}</FormHelperText>
         )}
       </FormControl>
       <TextField

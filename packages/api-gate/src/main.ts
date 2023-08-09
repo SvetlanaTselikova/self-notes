@@ -22,12 +22,16 @@ async function bootstrap() {
   app.use(cookieParser());
 
   const config = new DocumentBuilder()
-    .setTitle('Notes api docs')
-    .setDescription('The notes API description')
+    .setTitle('Api docs')
+    .setDescription('The Api description')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {
+      withCredentials: true,
+    },
+  });
 
   const port = process.env.PORT || 3000;
   await app.listen(port);

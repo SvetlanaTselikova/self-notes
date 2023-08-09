@@ -1,10 +1,12 @@
-import { useGetNotesQuery } from '../../redux';
+import { useNotesControllerFindAllQuery } from '../../redux';
 import { Alert, CircularProgress } from '@mui/material';
 import { NoteCard } from '../../components/note-card';
 import List from '@mui/material/List';
 
 export const NotesList = () => {
-  const { data, isLoading, error } = useGetNotesQuery();
+  const { data, isLoading, error } = useNotesControllerFindAllQuery({
+    page: 1,
+  });
 
   return (
     <div>
@@ -12,9 +14,9 @@ export const NotesList = () => {
         <Alert severity="error">Oops, somthing went wrong...</Alert>
       ) : isLoading ? (
         <CircularProgress />
-      ) : data ? (
+      ) : data?.data ? (
         <List>
-          {Object.values(data).map((note) => (
+          {Object.values(data?.data).map((note) => (
             <NoteCard note={note} />
           ))}
         </List>

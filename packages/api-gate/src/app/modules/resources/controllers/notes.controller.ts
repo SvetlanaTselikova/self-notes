@@ -14,19 +14,39 @@ import { NotesService } from '../services';
 import { ExistValidationPipe } from '../pipes/exist-validation.pipe';
 import { CreateNoteDto, UpdateNoteDto } from '../dto';
 import { ResourceCntroller } from '../types';
-import { Paginate, PaginateQuery, Paginated } from 'nestjs-paginate';
+import { Paginate, Paginated } from 'nestjs-paginate';
 import { PermissionGuard } from '../../permissions/guards/permission.guard';
-import { Api } from '../decorators/api';
+import {
+  Api,
+  ApiOkResponsePaginated,
+  PaginateQueryOptions,
+  PaginatedResponseDto,
+} from '../decorators/api';
 import { JwtAuthenticationGuard } from '../../authentication/guards';
 import {
+  ApiCookieAuth,
   ApiHeader,
+  ApiQuery,
   ApiResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
-@ApiTags('notes')
-@ApiHeader({ name: 'Access-Control-Allow-Credentials' })
+export class PaginateQuery {
+  page?: number;
+  limit?: number;
+  sortBy?: [string, string][];
+  searchBy?: string[];
+  search?: string;
+  filter?: {
+    [column: string]: string | string[];
+  };
+  select?: string[];
+  path: string;
+}
+
+@ApiTags('resources')
+@ApiCookieAuth()
 @Api(Notes)
 @Controller('notes')
 @UseGuards(JwtAuthenticationGuard)
@@ -35,10 +55,8 @@ export class NotesController implements ResourceCntroller<Notes> {
   constructor(public service: NotesService) {}
 
   @Get()
-  @ApiResponse({
-    status: 200,
-    type: Paginated<Notes>,
-  })
+  @ApiOkResponsePaginated(Notes)
+  @PaginateQueryOptions()
   @ApiUnauthorizedResponse()
   public findAll(@Paginate() query: PaginateQuery): Promise<Paginated<Notes>> {
     return this.service.find(query);

@@ -7,7 +7,8 @@
     "typeorm:run": "npm run typeorm migration:run -- -d libs/database/src/lib/config.ts",
     "typeorm:revert": "npm run typeorm -- -d libs/database/src/lib/config.ts migration:revert",
     "typeorm:create": "npm run typeorm -- migration:create libs/database/src/lib/migrations/$npm_config_name",
-    "typeorm:generate": "npm run typeorm -- -d libs/database/src/lib/config.ts migration:generate libs/database/src/lib/migrations/$npm_config_name"
+    "typeorm:generate": "npm run typeorm -- -d libs/database/src/lib/config.ts migration:generate libs/database/src/lib/migrations/$npm_config_name",
+    "generate-api": "rm -r ./libs/api-client/src/lib && java -jar swagger-codegen-cli.jar generate -i http://localhost:3000/api-json -l typescript-axios -o ./libs/api-client/src/lib"
   },
   "private": true,
   "dependencies": {
@@ -42,6 +43,7 @@
     "@nx/react": "^16.5.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@reduxjs/toolkit": "^1.9.5",
+    "@rtk-query/codegen-openapi": "^1.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/express": "^4.17.17",
     "@types/passport-jwt": "^3.0.9",
@@ -90,7 +92,7 @@
     "@nx/cypress": "16.5.2",
     "@nx/eslint-plugin": "16.5.2",
     "@nx/jest": "16.6.0",
-    "@nx/js": "16.6.0",
+    "@nx/js": "^16.6.0",
     "@nx/linter": "16.5.2",
     "@nx/node": "16.6.0",
     "@nx/web": "16.5.2",

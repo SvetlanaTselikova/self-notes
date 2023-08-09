@@ -11,7 +11,12 @@ import {
 } from 'class-validator';
 import { DayMood } from 'libs/database/src/lib/types';
 
-export class UpdateNoteDto extends Notes {
+type IUpdateNoteDto = Partial<Notes>;
+
+export class UpdateNoteDto implements IUpdateNoteDto {
+  @IsNotEmpty()
+  id: number;
+
   @IsOptional()
   @IsString()
   @MaxLength(65000)
@@ -24,7 +29,4 @@ export class UpdateNoteDto extends Notes {
   @IsOptional()
   @IsEnum(DayMood)
   dayMood: DayMood;
-
-  @IsEmpty()
-  createdBy: Users;
 }

@@ -13,28 +13,27 @@ import EditIcon from '@mui/icons-material/Edit';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
 
-import { DayMood, Note } from '../../redux/types';
 import { format } from 'date-fns';
-import { useDeleteNoteMutation } from '../../redux';
+import { Notes, useNotesControllerDeleteOneMutation } from '../../redux';
 import { ActionStatusSnackbar } from '../action-status-snackbar';
 
 type Props = {
-  note: Note;
+  note: Notes;
 };
 
 const IconMoodMap = {
-  [DayMood.good]: <SentimentVerySatisfiedIcon />,
-  [DayMood.bad]: <SentimentVeryDissatisfiedIcon />,
-  [DayMood.normal]: <SentimentNeutralIcon />,
+  good: <SentimentVerySatisfiedIcon />,
+  bad: <SentimentVeryDissatisfiedIcon />,
+  normal: <SentimentNeutralIcon />,
 };
 
 export const NoteCard = (props: Props) => {
-  const { id, text, date, mood } = props.note;
+  const { id, text, date, dayMood } = props.note;
   const [deleteNote, { isError, isLoading: isDeleting }] =
-    useDeleteNoteMutation();
+    useNotesControllerDeleteOneMutation();
 
   const handleDeleteNote = async () => {
-    await deleteNote(id);
+    await deleteNote({ id: String(id) });
   };
 
   return (
@@ -54,7 +53,7 @@ export const NoteCard = (props: Props) => {
         }
       >
         <ListItemButton>
-          <ListItemIcon>{IconMoodMap[mood]}</ListItemIcon>
+          <ListItemIcon>{IconMoodMap[dayMood]}</ListItemIcon>
           <ListItemText
             primary={format(new Date(date), 'yyyy-MM-dd hh:mm')}
             secondary={text}

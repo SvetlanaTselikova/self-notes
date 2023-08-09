@@ -1,4 +1,5 @@
 import { PaginateQuery, Paginated } from 'nestjs-paginate';
+import { ApiProperty } from '@nestjs/swagger';
 
 export type CreateBody<IEntity> = Partial<IEntity>;
 export type UpdateBody<IEntity> = Partial<IEntity>;

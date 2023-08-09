@@ -9,7 +9,9 @@ import {
 } from 'class-validator';
 import { DayMood } from 'libs/database/src/lib/types';
 
-export class CreateNoteDto extends Notes {
+type ICreateNoteDto = Partial<Notes>;
+
+export class CreateNoteDto implements ICreateNoteDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(65000)
@@ -22,7 +24,4 @@ export class CreateNoteDto extends Notes {
   @IsNotEmpty()
   @IsEnum(DayMood)
   dayMood: DayMood;
-
-  @IsNotEmpty()
-  createdBy: Users;
 }

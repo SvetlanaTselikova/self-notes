@@ -1,65 +1,129 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
-import { Note, NoteFormValues } from '../types';
-
-export const notesApi = createApi({
-  reducerPath: 'notesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api/' }),
-  // tagTypes: ["Products"],
-  endpoints: (builder) => ({
-    getNotes: builder.query<{ [key: string]: Note }, void>({
-      query: () => 'notes',
-      transformResponse: (response: { data: Note[] }) =>
-        response.data.reduce(
-          (acum, item) => ({ ...acum, [item.id]: item }),
-          {}
-        ),
+import { api } from './api';
+const injectedRtkApi = api.injectEndpoints({
+  endpoints: (build) => ({
+    notesControllerFindAll: build.query<
+      NotesControllerFindAllApiResponse,
+      NotesControllerFindAllApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/notes`,
+        params: {
+          page: queryArg.page,
+          limit: queryArg.limit,
+          search: queryArg.search,
+          sortBy: queryArg.sortBy,
+          filter: queryArg.filter,
+        },
+      }),
     }),
-    getNote: builder.query<Note, string>({
-      query(id) {
-        return `notes/${id}`;
-      },
-      transformResponse: (response: { data: Note }, _args, _meta) =>
-        response.data,
+    notesControllerCreate: build.mutation<
+      NotesControllerCreateApiResponse,
+      NotesControllerCreateApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/notes`,
+        method: 'POST',
+        body: queryArg.createNoteDto,
+      }),
     }),
-    createNote: builder.mutation<Note, NoteFormValues>({
-      query(data) {
-        return {
-          url: 'notes',
-          method: 'POST',
-          credentials: 'include',
-          body: data,
-        };
-      },
-      transformResponse: (response: { data: Note }) => response.data,
+    notesControllerUpdate: build.mutation<
+      NotesControllerUpdateApiResponse,
+      NotesControllerUpdateApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/notes/${queryArg.id}`,
+        method: 'PATCH',
+        body: queryArg.updateNoteDto,
+      }),
     }),
-    updateNote: builder.mutation<Note, Note>({
-      query(data) {
-        return {
-          url: `notes/${data.id}`,
-          method: 'PATCH',
-          credentials: 'include',
-          body: data,
-        };
-      },
-      transformResponse: (response: { data: Note }) => response.data,
-    }),
-    deleteNote: builder.mutation<null, number>({
-      query(id) {
-        return {
-          url: `notes/${id}`,
-          method: 'DELETE',
-          credentials: 'include',
-        };
-      },
+    notesControllerDeleteOne: build.mutation<
+      NotesControllerDeleteOneApiResponse,
+      NotesControllerDeleteOneApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/notes/${queryArg.id}`,
+        method: 'DELETE',
+      }),
     }),
   }),
+  overrideExisting: false,
 });
-
+export { injectedRtkApi as notesApi };
+export type NotesControllerFindAllApiResponse =
+  /** status 200  */ PaginatedResponseDto & {
+    data?: Notes[];
+  };
+export type NotesControllerFindAllApiArg = {
+  page?: number;
+  limit?: number;
+  search?: any;
+  sortBy?: any;
+  filter?: any;
+};
+export type NotesControllerCreateApiResponse =
+  /** status 200  */
+  Notes | /** status 201  */ Notes;
+export type NotesControllerCreateApiArg = {
+  createNoteDto: CreateNoteDto;
+};
+export type NotesControllerUpdateApiResponse = /** status 200  */ Notes;
+export type NotesControllerUpdateApiArg = {
+  id: string;
+  updateNoteDto: UpdateNoteDto;
+};
+export type NotesControllerDeleteOneApiResponse = unknown;
+export type NotesControllerDeleteOneApiArg = {
+  id: string;
+};
+export type PaginatedResponseMetaDto = {
+  itemsPerPage: number;
+  totalItems: number;
+  currentPage: number;
+  totalPages: number;
+  sortBy: string[];
+  searchBy: string[];
+  search: string;
+  filter?: object;
+};
+export type PaginatedResponseLinksDto = {
+  first?: string;
+  previous?: string;
+  current: string;
+  next?: string;
+  last?: string;
+};
+export type PaginatedResponseDto = {
+  meta: PaginatedResponseMetaDto;
+  links: PaginatedResponseLinksDto;
+};
+export type Users = {
+  id: number;
+  email: string;
+  name: string;
+  createdAt: string;
+  currentHashedRefreshToken?: string;
+};
+export type Notes = {
+  id: number;
+  text: string;
+  date: string;
+  dayMood: 'good' | 'normal' | 'bad';
+  createdBy: Users;
+};
+export type CreateNoteDto = {
+  text: string;
+  date: string;
+  dayMood: 'good' | 'normal' | 'bad';
+};
+export type UpdateNoteDto = {
+  id: number;
+  text: string;
+  date: string;
+  dayMood: 'good' | 'normal' | 'bad';
+};
 export const {
-  useCreateNoteMutation,
-  useDeleteNoteMutation,
-  useUpdateNoteMutation,
-  useGetNoteQuery,
-  useGetNotesQuery,
-  usePrefetch,
-} = notesApi;
+  useNotesControllerFindAllQuery,
+  useNotesControllerCreateMutation,
+  useNotesControllerUpdateMutation,
+  useNotesControllerDeleteOneMutation,
+} = injectedRtkApi;

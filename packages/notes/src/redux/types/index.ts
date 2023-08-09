@@ -1,14 +1,3 @@
-export type Note = {
-  id: number;
-  text: string;
-  mood: DayMood;
-  date: Date;
-};
+import { Notes } from '../services';
 
-export enum DayMood {
-  good = 'good',
-  normal = 'normal',
-  bad = 'bad',
-}
-
-export type NoteFormValues = Pick<Note, 'date' | 'mood' | 'text'>;
+export type NoteFormValues = Pick<Notes, 'dayMood' | 'text'> & { date: Date };
