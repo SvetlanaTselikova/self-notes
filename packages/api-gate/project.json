@@ -16,7 +16,8 @@
         "tsConfig": "packages/api-gate/tsconfig.app.json",
         "assets": ["packages/api-gate/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "packages/api-gate/webpack.config.js"
+        "webpackConfig": "packages/api-gate/webpack.config.js",
+        "transformers": ["@nestjs/swagger/plugin"]
       },
       "configurations": {
         "development": {},

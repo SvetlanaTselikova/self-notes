@@ -35,6 +35,7 @@
     "@nestjs/jwt": "^10.1.0",
     "@nestjs/passport": "^10.0.0",
     "@nestjs/platform-express": "^10.0.2",
+    "@nestjs/swagger": "^7.1.7",
     "@nestjs/typeorm": "^10.0.0",
     "@nx/angular": "^16.5.2",
     "@nx/nest": "^16.6.0",

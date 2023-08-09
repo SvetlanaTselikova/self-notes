@@ -16,8 +16,18 @@ import { Request, Response } from 'express';
 import { JwtAuthenticationGuard, JwtRefreshGuard } from '../guards';
 import { AuthenticationService } from '../services/auth.service';
 import RequestWithUser from '../types';
+import {
+  ApiHeader,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { Users } from '@self-notes-frontend/database';
 
-@Controller()
+@ApiTags('auth')
+@ApiHeader({ name: 'Access-Control-Allow-Credentials' })
+@Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthenticationController {
   constructor(
@@ -27,6 +37,10 @@ export class AuthenticationController {
   ) {}
 
   @Post('google-authenticate')
+  @ApiResponse({
+    status: 200,
+    type: Users,
+  })
   async authenticate(
     @Body() tokenData: TokenVerificationDto,
     @Req() request: Request
@@ -44,6 +58,8 @@ export class AuthenticationController {
 
   @UseGuards(JwtAuthenticationGuard)
   @Post('log-out')
+  @ApiOkResponse()
+  @ApiUnauthorizedResponse()
   @HttpCode(200)
   async logOut(@Req() request: RequestWithUser, @Res() response: Response) {
     await this.usersService.removeRefreshToken(request.user.id);
@@ -52,6 +68,11 @@ export class AuthenticationController {
 
   @UseGuards(JwtRefreshGuard)
   @Get('refresh')
+  @ApiResponse({
+    status: 200,
+    type: Users,
+  })
+  @ApiUnauthorizedResponse()
   refresh(@Req() request: RequestWithUser) {
     const accessTokenCookie = this.authService.getCookieWithJwtAccessToken(
       request.user.id
@@ -63,11 +84,18 @@ export class AuthenticationController {
 
   @UseGuards(JwtAuthenticationGuard)
   @Get('check-auth')
+  @ApiOkResponse()
+  @ApiUnauthorizedResponse()
   @HttpCode(200)
   async checkAuth() {}
 
   @UseGuards(JwtAuthenticationGuard)
   @Get('whoami')
+  @ApiResponse({
+    status: 200,
+    type: Users,
+  })
+  @ApiUnauthorizedResponse()
   async whoAmI(@Req() request: RequestWithUser) {
     return request.user;
   }
