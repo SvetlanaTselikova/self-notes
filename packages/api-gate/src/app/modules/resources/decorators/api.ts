@@ -18,16 +18,57 @@ export function Api(entity: EntityClassOrSchema): ClassDecorator {
   };
 }
 
-export function PaginateQueryOptions() {
+export function PaginateQueryOptions<DataDto extends Type<unknown>>(
+  dataDto: DataDto,
+  filterFields: string[]
+) {
   return applyDecorators(
-    ApiQuery({ name: 'page', required: false, type: Number }),
-    ApiQuery({ name: 'limit', required: false, type: Number }),
-    ApiQuery({ name: 'search', required: false }),
-    ApiQuery({ name: 'sortBy', required: false }),
-    ApiQuery({ name: 'filter', required: false })
+    ApiExtraModels(PaginatedResponseDto, dataDto),
+    ApiOkResponse({
+      schema: {
+        allOf: [
+          { $ref: getSchemaPath(PaginatedResponseDto) },
+          {
+            properties: {
+              data: {
+                type: 'array',
+                items: { $ref: getSchemaPath(dataDto) },
+              },
+            },
+          },
+        ],
+      },
+    }),
+    ApiQuery({
+      name: 'page',
+      required: false,
+    }),
+    ApiQuery({
+      name: 'limit',
+      required: false,
+    }),
+    ApiQuery({
+      name: 'search',
+      required: false,
+    }),
+    ApiQuery({
+      name: 'searchBy',
+      required: false,
+      isArray: true,
+      type: 'string',
+    }),
+    ApiQuery({
+      name: 'sortBy',
+      required: false,
+    }),
+    ...filterFields.map((field) =>
+      ApiQuery({
+        name: 'filter.' + field,
+        required: false,
+      })
+    )
   );
 }
-
 class PaginatedResponseMetaDto {
   @ApiProperty()
   itemsPerPage: number;
@@ -67,25 +108,3 @@ export class PaginatedResponseDto<T> {
   @ApiProperty()
   links: PaginatedResponseLinksDto;
 }
-
-export const ApiOkResponsePaginated = <DataDto extends Type<unknown>>(
-  dataDto: DataDto
-) =>
-  applyDecorators(
-    ApiExtraModels(PaginatedResponseDto, dataDto),
-    ApiOkResponse({
-      schema: {
-        allOf: [
-          { $ref: getSchemaPath(PaginatedResponseDto) },
-          {
-            properties: {
-              data: {
-                type: 'array',
-                items: { $ref: getSchemaPath(dataDto) },
-              },
-            },
-          },
-        ],
-      },
-    })
-  );

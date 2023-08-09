@@ -16,12 +16,7 @@ import { CreateNoteDto, UpdateNoteDto } from '../dto';
 import { ResourceCntroller } from '../types';
 import { Paginate, Paginated } from 'nestjs-paginate';
 import { PermissionGuard } from '../../permissions/guards/permission.guard';
-import {
-  Api,
-  ApiOkResponsePaginated,
-  PaginateQueryOptions,
-  PaginatedResponseDto,
-} from '../decorators/api';
+import { Api, PaginateQueryOptions } from '../decorators/api';
 import { JwtAuthenticationGuard } from '../../authentication/guards';
 import {
   ApiCookieAuth,
@@ -55,8 +50,7 @@ export class NotesController implements ResourceCntroller<Notes> {
   constructor(public service: NotesService) {}
 
   @Get()
-  @ApiOkResponsePaginated(Notes)
-  @PaginateQueryOptions()
+  @PaginateQueryOptions(Notes, ['id', 'text', 'dayMood', 'date', 'createdBy'])
   @ApiUnauthorizedResponse()
   public findAll(@Paginate() query: PaginateQuery): Promise<Paginated<Notes>> {
     return this.service.find(query);

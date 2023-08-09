@@ -11,7 +11,9 @@ import { useParams } from 'react-router-dom';
 export const NoteEdit = () => {
   const noteId =
     useParams().noteId || window.location.pathname.split('/')?.pop();
-  const { data, isLoading, error } = useNotesControllerFindAllQuery({});
+  const { data, isLoading, error } = useNotesControllerFindAllQuery({
+    'filter.id': `$eq:${noteId}`,
+  });
   const note = data?.data?.[0];
   const [updateNote, { isLoading: isSaving, isError: saveError }] =
     useNotesControllerUpdateMutation();

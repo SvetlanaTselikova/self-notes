@@ -11,8 +11,13 @@ const injectedRtkApi = api.injectEndpoints({
           page: queryArg.page,
           limit: queryArg.limit,
           search: queryArg.search,
+          searchBy: queryArg.searchBy,
           sortBy: queryArg.sortBy,
-          filter: queryArg.filter,
+          'filter.id': queryArg['filter.id'],
+          'filter.text': queryArg['filter.text'],
+          'filter.dayMood': queryArg['filter.dayMood'],
+          'filter.date': queryArg['filter.date'],
+          'filter.createdBy': queryArg['filter.createdBy'],
         },
       }),
     }),
@@ -54,15 +59,20 @@ export type NotesControllerFindAllApiResponse =
     data?: Notes[];
   };
 export type NotesControllerFindAllApiArg = {
-  page?: number;
-  limit?: number;
+  page?: any;
+  limit?: any;
   search?: any;
+  searchBy?: string[];
   sortBy?: any;
-  filter?: any;
+  'filter.id'?: any;
+  'filter.text'?: any;
+  'filter.dayMood'?: any;
+  'filter.date'?: any;
+  'filter.createdBy'?: any;
 };
-export type NotesControllerCreateApiResponse =
-  /** status 200  */
-  Notes | /** status 201  */ Notes;
+export type NotesControllerCreateApiResponse = /** status 200  */
+  | Notes
+  | /** status 201  */ Notes;
 export type NotesControllerCreateApiArg = {
   createNoteDto: CreateNoteDto;
 };
