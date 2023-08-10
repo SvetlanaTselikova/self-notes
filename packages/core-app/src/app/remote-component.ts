@@ -1,9 +1,7 @@
 import {
   Component,
-  OnInit,
   ElementRef,
   ViewChild,
-  AfterViewInit,
   AfterContentInit,
 } from '@angular/core';
 import * as React from 'react';

@@ -42,7 +42,6 @@ const validationSchema = yup.object({
     .string()
     .max(MAX_TEXT_LENGTH, `Max length is ${MAX_TEXT_LENGTH}`)
     .required(REQUIRED_TEXT),
-  mood: yup.string().required(REQUIRED_TEXT),
   date: yup.date().required(REQUIRED_TEXT),
 });
 
