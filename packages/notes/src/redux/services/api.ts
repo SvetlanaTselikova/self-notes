@@ -6,4 +6,5 @@ export const api = createApi({
     credentials: 'include',
   }),
   endpoints: () => ({}),
+  tagTypes: ['Notes']
 });

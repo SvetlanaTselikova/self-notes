@@ -20,6 +20,13 @@ const injectedRtkApi = api.injectEndpoints({
           'filter.createdBy': queryArg['filter.createdBy'],
         },
       }),
+      providesTags: (result, error, arg) =>
+        result?.data
+          ? [
+              ...result?.data.map(({ id }) => ({ type: 'Notes' as const, id })),
+              'Notes',
+            ]
+          : ['Notes'],
     }),
     notesControllerCreate: build.mutation<
       NotesControllerCreateApiResponse,
@@ -30,6 +37,7 @@ const injectedRtkApi = api.injectEndpoints({
         method: 'POST',
         body: queryArg.createNoteDto,
       }),
+      invalidatesTags: ['Notes'],
     }),
     notesControllerUpdate: build.mutation<
       NotesControllerUpdateApiResponse,
@@ -40,6 +48,7 @@ const injectedRtkApi = api.injectEndpoints({
         method: 'PATCH',
         body: queryArg.updateNoteDto,
       }),
+      invalidatesTags: (result, error, arg) => [{ type: 'Notes', id: arg.id }],
     }),
     notesControllerDeleteOne: build.mutation<
       NotesControllerDeleteOneApiResponse,
@@ -49,6 +58,37 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/api/notes/${queryArg.id}`,
         method: 'DELETE',
       }),
+      async onQueryStarted({ id }, { dispatch, queryFulfilled, getState }) {
+        try {
+          await queryFulfilled;
+
+          for (const {
+            endpointName,
+            originalArgs,
+          } of api.util.selectInvalidatedBy(getState(), [
+            { type: 'Notes', id },
+          ])) {
+            if (endpointName !== 'notesControllerFindAll') continue;
+            dispatch(
+              injectedRtkApi.util.updateQueryData(
+                'notesControllerFindAll',
+                originalArgs,
+                (draft) => {
+                  const newResp = {
+                    ...draft,
+                    data: draft?.data
+                      ? draft.data.filter((item) => String(item.id) !== id)
+                      : [],
+                  };
+                  return newResp;
+                }
+              )
+            );
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      },
     }),
   }),
   overrideExisting: false,
@@ -70,9 +110,9 @@ export type NotesControllerFindAllApiArg = {
   'filter.date'?: any;
   'filter.createdBy'?: any;
 };
-export type NotesControllerCreateApiResponse = /** status 200  */
-  | Notes
-  | /** status 201  */ Notes;
+export type NotesControllerCreateApiResponse =
+  /** status 200  */
+  Notes | /** status 201  */ Notes;
 export type NotesControllerCreateApiArg = {
   createNoteDto: CreateNoteDto;
 };
