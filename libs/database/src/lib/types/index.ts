@@ -3,8 +3,3 @@ export enum DayMood {
   normal = 'normal',
   bad = 'bad',
 }
-
-export enum UserProvider {
-  vk = 'vk',
-  gmail = 'gmail',
-}

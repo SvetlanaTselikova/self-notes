@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { Notes, Users } from '@self-notes-frontend/database';
-import { NotesService, UsersService } from './services';
+import { NotesService } from './services';
 import { NotesController } from './controllers';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PermissionsModule } from '../permissions/permissions.module';
@@ -13,6 +13,6 @@ import { AuthenticationModule } from '../authentication/authentication.module';
     AuthenticationModule,
   ],
   controllers: [NotesController],
-  providers: [NotesService, UsersService],
+  providers: [NotesService],
 })
 export class ResourcesModule {}

@@ -14,10 +14,6 @@ const injectedRtkApi = api.injectEndpoints({
           searchBy: queryArg.searchBy,
           sortBy: queryArg.sortBy,
           'filter.id': queryArg['filter.id'],
-          'filter.text': queryArg['filter.text'],
-          'filter.dayMood': queryArg['filter.dayMood'],
-          'filter.date': queryArg['filter.date'],
-          'filter.createdBy': queryArg['filter.createdBy'],
         },
       }),
       providesTags: (result, error, arg) =>

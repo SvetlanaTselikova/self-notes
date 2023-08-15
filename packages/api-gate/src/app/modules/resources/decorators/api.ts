@@ -108,3 +108,16 @@ export class PaginatedResponseDto<T> {
   @ApiProperty()
   links: PaginatedResponseLinksDto;
 }
+
+export class PaginateQueryDto {
+  page?: number;
+  limit?: number;
+  sortBy?: [string, string][];
+  searchBy?: string[];
+  search?: string;
+  filter?: {
+    [column: string]: string | string[];
+  };
+  select?: string[];
+  path: string;
+}

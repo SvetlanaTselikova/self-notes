@@ -26,7 +26,6 @@ import {
 import { Users } from '@self-notes-frontend/database';
 
 @ApiTags('auth')
-@ApiHeader({ name: 'Access-Control-Allow-Credentials' })
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthenticationController {

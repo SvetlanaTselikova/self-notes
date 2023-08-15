@@ -1,11 +1,9 @@
-import { Notes, Users } from '@self-notes-frontend/database';
+import { Notes } from '@self-notes-frontend/database';
 import {
   IsEnum,
   IsString,
   MaxLength,
   IsOptional,
-  IsDate,
-  IsEmpty,
   IsNotEmpty,
   IsDateString,
 } from 'class-validator';
