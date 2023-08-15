@@ -19,7 +19,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { NoteFormValues } from '../../redux/types';
 import { ActionStatusSnackbar } from '../action-status-snackbar';
-import { CreateNoteDto, Notes, UpdateNoteDto } from '../../redux';
+import { CreateNoteDto, DayMood, Notes, UpdateNoteDto } from '../../redux';
 
 type CommonProps = { isSaving: boolean; saveError: boolean };
 
@@ -63,7 +63,7 @@ export const NoteForm = (props: CreateProps | EditProps) => {
     } else
       return {
         date: new Date(),
-        dayMood: 'good',
+        dayMood: DayMood.good,
         text: '',
       };
   };
@@ -120,7 +120,7 @@ export const NoteForm = (props: CreateProps | EditProps) => {
           onBlur={formik.handleBlur}
         >
           <FormControlLabel
-            value={'good'}
+            value={DayMood.good}
             control={
               <Radio
                 icon={<SentimentVerySatisfiedIcon />}
@@ -130,7 +130,7 @@ export const NoteForm = (props: CreateProps | EditProps) => {
             label="Good"
           />
           <FormControlLabel
-            value={'normal'}
+            value={DayMood.normal}
             control={
               <Radio
                 icon={<SentimentNeutralIcon />}
@@ -140,7 +140,7 @@ export const NoteForm = (props: CreateProps | EditProps) => {
             label="Normal"
           />
           <FormControlLabel
-            value={'bad'}
+            value={DayMood.bad}
             control={
               <Radio
                 icon={<SentimentVeryDissatisfiedIcon />}

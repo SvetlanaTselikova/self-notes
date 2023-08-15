@@ -5,10 +5,7 @@ import { NoteCreate, NoteEdit } from './pages';
 
 import { NotesList } from './pages';
 import { ThemeProvider, createTheme } from '@mui/material';
-
-type Props = {
-  page: 'edit' | 'list' | 'create';
-};
+import { PAGE_TYPE, RemoteComponentProps } from '@self-notes-frontend/utils';
 
 const theme = createTheme({
   palette: {
@@ -21,18 +18,18 @@ const theme = createTheme({
   },
 });
 
-export function App(props: Props) {
+export function App(props: RemoteComponentProps) {
   const { page } = props;
   const renderPage = () => {
-    if (page === 'edit') {
+    if (page === PAGE_TYPE.edit) {
       return <NoteEdit />;
     }
 
-    if (page === 'create') {
+    if (page === PAGE_TYPE.create) {
       return <NoteCreate />;
     }
 
-    if (page === 'list') {
+    if (page === PAGE_TYPE.list) {
       return <NotesList />;
     }
   };

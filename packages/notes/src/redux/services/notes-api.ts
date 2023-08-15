@@ -1,4 +1,7 @@
+import { API_PREFIX, NOTES_API } from '@self-notes-frontend/utils';
+import { NOTES_TAG } from '../constants';
 import { api } from './api';
+
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     notesControllerFindAll: build.query<
@@ -6,7 +9,7 @@ const injectedRtkApi = api.injectEndpoints({
       NotesControllerFindAllApiArg
     >({
       query: (queryArg) => ({
-        url: `/api/notes`,
+        url: `${API_PREFIX}${NOTES_API}`,
         params: {
           page: queryArg.page,
           limit: queryArg.limit,
@@ -19,39 +22,41 @@ const injectedRtkApi = api.injectEndpoints({
       providesTags: (result, error, arg) =>
         result?.data
           ? [
-              ...result?.data.map(({ id }) => ({ type: 'Notes' as const, id })),
-              'Notes',
+              ...result?.data.map(({ id }) => ({ type: NOTES_TAG, id })),
+              NOTES_TAG,
             ]
-          : ['Notes'],
+          : [NOTES_TAG],
     }),
     notesControllerCreate: build.mutation<
       NotesControllerCreateApiResponse,
       NotesControllerCreateApiArg
     >({
       query: (queryArg) => ({
-        url: `/api/notes`,
+        url: `${API_PREFIX}${NOTES_API}`,
         method: 'POST',
         body: queryArg.createNoteDto,
       }),
-      invalidatesTags: ['Notes'],
+      invalidatesTags: [NOTES_TAG],
     }),
     notesControllerUpdate: build.mutation<
       NotesControllerUpdateApiResponse,
       NotesControllerUpdateApiArg
     >({
       query: (queryArg) => ({
-        url: `/api/notes/${queryArg.id}`,
+        url: `${API_PREFIX}${NOTES_API}/${queryArg.id}`,
         method: 'PATCH',
         body: queryArg.updateNoteDto,
       }),
-      invalidatesTags: (result, error, arg) => [{ type: 'Notes', id: arg.id }],
+      invalidatesTags: (result, error, arg) => [
+        { type: NOTES_TAG, id: arg.id },
+      ],
     }),
     notesControllerDeleteOne: build.mutation<
       NotesControllerDeleteOneApiResponse,
       NotesControllerDeleteOneApiArg
     >({
       query: (queryArg) => ({
-        url: `/api/notes/${queryArg.id}`,
+        url: `${API_PREFIX}${NOTES_API}/${queryArg.id}`,
         method: 'DELETE',
       }),
       async onQueryStarted({ id }, { dispatch, queryFulfilled, getState }) {
@@ -62,7 +67,7 @@ const injectedRtkApi = api.injectEndpoints({
             endpointName,
             originalArgs,
           } of api.util.selectInvalidatedBy(getState(), [
-            { type: 'Notes', id },
+            { type: NOTES_TAG, id },
           ])) {
             if (endpointName !== 'notesControllerFindAll') continue;
             dispatch(
@@ -101,10 +106,6 @@ export type NotesControllerFindAllApiArg = {
   searchBy?: string[];
   sortBy?: any;
   'filter.id'?: any;
-  'filter.text'?: any;
-  'filter.dayMood'?: any;
-  'filter.date'?: any;
-  'filter.createdBy'?: any;
 };
 export type NotesControllerCreateApiResponse =
   /** status 200  */
@@ -149,23 +150,29 @@ export type Users = {
   createdAt: string;
   currentHashedRefreshToken?: string;
 };
+
+export enum DayMood {
+  good = 'good',
+  normal = 'normal',
+  bad = 'bad',
+}
 export type Notes = {
   id: number;
   text: string;
   date: string;
-  dayMood: 'good' | 'normal' | 'bad';
+  dayMood: DayMood;
   createdBy: Users;
 };
 export type CreateNoteDto = {
   text: string;
   date: string;
-  dayMood: 'good' | 'normal' | 'bad';
+  dayMood: DayMood;
 };
 export type UpdateNoteDto = {
   id: number;
   text: string;
   date: string;
-  dayMood: 'good' | 'normal' | 'bad';
+  dayMood: DayMood;
 };
 export const {
   useNotesControllerFindAllQuery,

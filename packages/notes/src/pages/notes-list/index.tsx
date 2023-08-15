@@ -4,6 +4,8 @@ import { NoteCard } from '../../components/note-card';
 import List from '@mui/material/List';
 import React from 'react';
 
+const EMPTY_NOTES = 'There are no notes yet.';
+
 export const NotesList = () => {
   const { data, isLoading, error } = useNotesControllerFindAllQuery({
     page: 1,
@@ -26,7 +28,7 @@ export const NotesList = () => {
               ))}
             </List>
           ) : (
-            'There are no notes yet.'
+            EMPTY_NOTES
           )}
         </React.Fragment>
       ) : null}
