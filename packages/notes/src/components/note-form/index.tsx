@@ -83,7 +83,10 @@ export const NoteForm = (props: CreateProps | EditProps) => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} style={{ width: '40%' }}>
+    <form
+      onSubmit={formik.handleSubmit}
+      style={{ width: '100%', maxWidth: '600px' }}
+    >
       <ActionStatusSnackbar isError={saveError} isLoading={isSaving} />
       {renderTitle()}
 

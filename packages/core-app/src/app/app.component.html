@@ -1,1 +1,5 @@
-<router-outlet></router-outlet>
+<router-outlet *ngIf="isLoginRoute$ | async; else headerBlock"></router-outlet>
+:
+<ng-template #headerBlock>
+  <app-header></app-header>
+</ng-template>

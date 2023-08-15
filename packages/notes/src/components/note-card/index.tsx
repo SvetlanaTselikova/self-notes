@@ -52,11 +52,18 @@ export const NoteCard = (props: Props) => {
           </React.Fragment>
         }
       >
-        <ListItemButton>
+        <ListItemButton style={{ cursor: 'auto' }}>
           <ListItemIcon>{IconMoodMap[dayMood]}</ListItemIcon>
           <ListItemText
             primary={format(new Date(date), 'yyyy-MM-dd hh:mm')}
             secondary={text}
+            secondaryTypographyProps={{
+              style: {
+                whiteSpace: 'normal',
+                wordBreak: 'break-all',
+                maxWidth: '80%',
+              },
+            }}
           />
         </ListItemButton>
       </ListItem>

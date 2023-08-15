@@ -8,16 +8,16 @@ import * as React from 'react';
 import { ActivatedRoute } from '@angular/router';
 import { createRoot } from 'react-dom/client';
 
-const containerElementName = 'reactApp';
+const CONTAINER_ELEMENT_NAME = 'injectedApp';
 
 @Component({
-  selector: 'app-react',
-  template: ` <h2 style="color: cadetblue">
-    <span #${containerElementName}></span>
-  </h2>`,
+  selector: 'app-remote-component',
+  templateUrl: './remote.component.html',
+  styleUrls: ['./remote.component.sass'],
 })
 export class RemoteComponent implements AfterContentInit {
-  @ViewChild(containerElementName, { static: true }) containerRef!: ElementRef;
+  @ViewChild(CONTAINER_ELEMENT_NAME, { static: true })
+  containerRef!: ElementRef;
   vc!: ElementRef;
   root!: any;
 

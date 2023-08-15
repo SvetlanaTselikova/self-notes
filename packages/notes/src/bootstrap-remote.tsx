@@ -4,10 +4,22 @@ import { store } from './redux';
 import { NoteCreate, NoteEdit } from './pages';
 
 import { NotesList } from './pages';
+import { ThemeProvider, createTheme } from '@mui/material';
 
 type Props = {
   page: 'edit' | 'list' | 'create';
 };
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#3f51b5',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+  },
+});
 
 export function App(props: Props) {
   const { page } = props;
@@ -27,7 +39,9 @@ export function App(props: Props) {
 
   return (
     <StrictMode>
-      <Provider store={store}>{renderPage()}</Provider>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>{renderPage()}</Provider>
+      </ThemeProvider>
     </StrictMode>
   );
 }
