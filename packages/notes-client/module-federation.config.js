@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'notes',
+  name: 'notes-client',
   exposes: {
     './Module': './src/remote-entry.ts',
   },

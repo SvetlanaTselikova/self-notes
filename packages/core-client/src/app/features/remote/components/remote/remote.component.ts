@@ -28,7 +28,7 @@ export class RemoteComponent implements AfterContentInit {
     const pageName = this.route.snapshot.data['page'];
 
     try {
-      import('notes/Module').then((val) => {
+      import('notes-client/Module').then((val) => {
         this.root.render(React.createElement(val.default, { page: pageName }));
       });
     } catch (error) {

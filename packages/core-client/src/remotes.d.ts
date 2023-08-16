@@ -1,1 +1,1 @@
-declare module 'notes/Module';
+declare module 'notes-client/Module';
