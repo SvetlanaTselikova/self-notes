@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+
+  core-client:
+    extends:
+      file: docker-compose.app-base.yaml
+      service: nx-app-base
+    command: npm run core-client:dev:docker
+    ports:
+      - 4200:4200
+    networks:
+      - self-notes_app-network
+
+
+  api-gate:
+    extends:
+      file: docker-compose.app-base.yaml
+      service: nx-app-base
+    command: npm run api-gate:dev:docker
+    ports:
+      - 3000:3000 
+    environment:
+      DB_HOST: postgres
+    networks:
+      - self-notes_app-network
+
+volumes:
+  mono-node-modules: null
+
+networks:
+  self-notes_app-network:
+    external: true
