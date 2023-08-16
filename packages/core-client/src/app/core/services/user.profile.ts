@@ -28,4 +28,8 @@ export class UserProfileService {
   getCurrentUserProfileValue(): any {
     return this.userProfileSubject.value;
   }
+
+  resetUserProfile() {
+    this.userProfileSubject.next(null);
+  }
 }

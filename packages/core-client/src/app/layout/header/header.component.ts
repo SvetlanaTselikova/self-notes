@@ -45,6 +45,7 @@ export class HeaderComponent implements OnInit {
         take(1),
         tap(() => {
           this.logoutInProgress$.next(false);
+          this.userProfileService.resetUserProfile();
           this.router.navigate([LOGIN_PATH]);
         }),
         catchError(() => {

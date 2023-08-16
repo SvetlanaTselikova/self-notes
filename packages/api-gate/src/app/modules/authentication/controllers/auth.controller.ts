@@ -62,7 +62,8 @@ export class AuthenticationController {
   @HttpCode(200)
   async logOut(@Req() request: RequestWithUser, @Res() response: Response) {
     await this.usersService.removeRefreshToken(request.user.id);
-    request.res.setHeader('Set-Cookie', this.authService.getCookiesForLogOut());
+    response.setHeader('Set-Cookie', this.authService.getCookiesForLogOut());
+    response.status(200).send();
   }
 
   @UseGuards(JwtRefreshGuard)
@@ -80,13 +81,6 @@ export class AuthenticationController {
     request.res.setHeader('Set-Cookie', accessTokenCookie);
     return request.user;
   }
-
-  @UseGuards(JwtAuthenticationGuard)
-  @Get('check-auth')
-  @ApiOkResponse()
-  @ApiUnauthorizedResponse()
-  @HttpCode(200)
-  async checkAuth() {}
 
   @UseGuards(JwtAuthenticationGuard)
   @Get('whoami')
