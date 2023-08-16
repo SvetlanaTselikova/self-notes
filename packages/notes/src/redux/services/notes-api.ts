@@ -1,4 +1,4 @@
-import { API_PREFIX, NOTES_API } from '@self-notes-frontend/utils';
+import { API_PREFIX, NOTES_API } from '@self-notes/utils';
 import { NOTES_TAG } from '../constants';
 import { api } from './api';
 

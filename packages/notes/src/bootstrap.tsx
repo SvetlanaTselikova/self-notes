@@ -7,7 +7,7 @@ import {
   NOTES_CREATE_PATH,
   NOTES_EDIT_PATH,
   NOTES_LIST_PATH,
-} from '@self-notes-frontend/utils';
+} from '@self-notes/utils';
 import { NotesList, NoteCreate, NoteEdit } from './pages';
 
 const router = createBrowserRouter([

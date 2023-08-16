@@ -1,4 +1,4 @@
-import { API_GATE_URL } from '@self-notes-frontend/utils';
+import { API_GATE_URL } from '@self-notes/utils';
 import { Configuration } from '../../auth';
 
 export function authConfigFactory(): Configuration {

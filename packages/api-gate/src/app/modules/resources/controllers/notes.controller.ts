@@ -9,7 +9,7 @@ import {
   Get,
   UseGuards,
 } from '@nestjs/common';
-import { Notes } from '@self-notes-frontend/database';
+import { Notes } from '@self-notes/database';
 import { NotesService } from '../services';
 import { ExistValidationPipe } from '../pipes/exist-validation.pipe';
 import { CreateNoteDto, UpdateNoteDto } from '../dto';

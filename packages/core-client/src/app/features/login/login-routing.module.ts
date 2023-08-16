@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { authGuard } from '../../core/guards/auth-guard';
-import { LOGIN_PATH } from '@self-notes-frontend/utils';
+import { LOGIN_PATH } from '@self-notes/utils';
 
 const routes: Routes = [
   {

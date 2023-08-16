@@ -9,7 +9,7 @@ import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
-import { LOGIN_PATH } from '@self-notes-frontend/utils';
+import { LOGIN_PATH } from '@self-notes/utils';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

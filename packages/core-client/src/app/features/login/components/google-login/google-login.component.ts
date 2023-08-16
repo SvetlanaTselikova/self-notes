@@ -5,8 +5,8 @@ import {
 } from '@abacritt/angularx-social-login';
 import { EMPTY, Subject, from, switchMap, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthService } from 'packages/core-app/src/app/auth/services/auth.service';
-import { NOTES_LIST_PATH } from '@self-notes-frontend/utils';
+import { AuthService } from 'packages/core-client/src/app/auth/services/auth.service';
+import { NOTES_LIST_PATH } from '@self-notes/utils';
 
 @Component({
   selector: 'app-google-login',

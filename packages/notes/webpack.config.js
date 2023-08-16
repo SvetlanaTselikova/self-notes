@@ -25,7 +25,7 @@ function getClientEnvironment() {
 const definePlugin = new webpack.DefinePlugin();
 // Nx plugins for webpack to build config object from Nx options and context.
 module.exports = composePlugins(
-  definePlugin,
+  // definePlugin,
   withNx(),
   withReact(),
   withModuleFederation(config)

@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { ConfigService } from '@nestjs/config';
 import { google, Auth } from 'googleapis';
 import { AuthenticationService } from './auth.service';
-import { Users } from '@self-notes-frontend/database';
+import { Users } from '@self-notes/database';
 
 @Injectable()
 export class GoogleAuthenticationService {

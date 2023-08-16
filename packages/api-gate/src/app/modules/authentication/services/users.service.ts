@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Users } from '@self-notes-frontend/database';
+import { Users } from '@self-notes/database';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()

@@ -15,8 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@self-notes-frontend/database": ["libs/database/src/index.ts"],
-      "@self-notes-frontend/utils": ["libs/utils/src/index.ts"]
+      "@self-notes/database": ["libs/database/src/index.ts"],
+      "@self-notes/utils": ["libs/utils/src/index.ts"]
     },
     "noImplicitAny": false
   },

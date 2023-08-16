@@ -12,7 +12,7 @@ import {
   GoogleSigninButtonModule,
   SocialAuthServiceConfig,
 } from '@abacritt/angularx-social-login';
-import { GOOGLE_CLIENT_ID, GOOGLE_SCOPES } from '@self-notes-frontend/utils';
+import { GOOGLE_CLIENT_ID, GOOGLE_SCOPES } from '@self-notes/utils';
 
 @NgModule({
   imports: [

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { Notes, Users } from '@self-notes-frontend/database';
+import { Notes, Users } from '@self-notes/database';
 import { NotesService } from './services';
 import { NotesController } from './controllers';
 import { TypeOrmModule } from '@nestjs/typeorm';

@@ -1,5 +1,5 @@
 import { MongoAbility, InferSubjects } from '@casl/ability';
-import { Notes } from '@self-notes-frontend/database';
+import { Notes } from '@self-notes/database';
 
 export enum Action {
   Post = 'POST',

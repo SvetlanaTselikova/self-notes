@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { Users } from '@self-notes-frontend/database';
+import { Users } from '@self-notes/database';
 
 export interface TokenPayload {
   userId: number;

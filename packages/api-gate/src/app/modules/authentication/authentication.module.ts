@@ -10,7 +10,7 @@ import {
 } from './services';
 import { JwtAuthenticationGuard, JwtRefreshGuard } from './guards';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Users } from '@self-notes-frontend/database';
+import { Users } from '@self-notes/database';
 import { AuthenticationController } from './controllers/auth.controller';
 
 @Module({

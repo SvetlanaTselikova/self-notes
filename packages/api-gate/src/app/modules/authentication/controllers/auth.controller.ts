@@ -23,7 +23,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { Users } from '@self-notes-frontend/database';
+import { Users } from '@self-notes/database';
 
 @ApiTags('auth')
 @Controller('auth')

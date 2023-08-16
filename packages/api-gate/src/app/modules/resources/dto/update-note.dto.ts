@@ -1,4 +1,4 @@
-import { Notes } from '@self-notes-frontend/database';
+import { Notes } from '@self-notes/database';
 import {
   IsEnum,
   IsString,

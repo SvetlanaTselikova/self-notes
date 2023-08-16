@@ -1,4 +1,4 @@
 module.exports = {
-  name: 'core-app',
+  name: 'core-client',
   remotes: [['notes', 'http://localhost:4201/remoteEntry.js']],
 };

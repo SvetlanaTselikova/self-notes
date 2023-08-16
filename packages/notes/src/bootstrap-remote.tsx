@@ -5,7 +5,7 @@ import { NoteCreate, NoteEdit } from './pages';
 
 import { NotesList } from './pages';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { PAGE_TYPE, RemoteComponentProps } from '@self-notes-frontend/utils';
+import { PAGE_TYPE, RemoteComponentProps } from '@self-notes/utils';
 
 const theme = createTheme({
   palette: {

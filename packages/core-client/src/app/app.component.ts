@@ -3,10 +3,10 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, merge, of } from 'rxjs';
-import { LOGIN_PATH } from '@self-notes-frontend/utils';
+import { LOGIN_PATH } from '@self-notes/utils';
 
 @Component({
-  selector: 'self-notes-frontend-root',
+  selector: 'self-notes-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass'],
 })
@@ -35,5 +35,5 @@ export class AppComponent {
       )
     );
   }
-  title = 'core-app';
+  title = 'core-client';
 }

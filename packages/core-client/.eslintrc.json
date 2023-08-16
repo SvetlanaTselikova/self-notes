@@ -17,7 +17,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "self-notes-frontend",
+            "prefix": "self-notes",
             "style": "kebab-case"
           }
         ]

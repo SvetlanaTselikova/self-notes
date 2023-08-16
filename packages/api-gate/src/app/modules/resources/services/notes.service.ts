@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { Notes } from '@self-notes-frontend/database';
+import { Notes } from '@self-notes/database';
 import { DataSource } from 'typeorm';
 import { ResourceService } from './resource.service';
 

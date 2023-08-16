@@ -1,5 +1,5 @@
 {
-  "name": "@self-notes-frontend/source",
+  "name": "@self-notes/source",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -8,7 +8,7 @@
     "typeorm:revert": "npm run typeorm -- -d libs/database/src/lib/config.ts migration:revert",
     "typeorm:create": "npm run typeorm -- migration:create libs/database/src/lib/migrations/$npm_config_name",
     "typeorm:generate": "npm run typeorm -- -d libs/database/src/lib/config.ts migration:generate libs/database/src/lib/migrations/$npm_config_name",
-    "generate-api": "rm -r ./packages/core-app/src/app/auth && java -jar swagger-codegen-cli.jar generate -i http://localhost:3000/api-json -l typescript-angular -o ./packages/core-app/src/app/auth"
+    "generate-api": "rm -r ./packages/core-client/src/app/auth && java -jar swagger-codegen-cli.jar generate -i http://localhost:3000/api-json -l typescript-angular -o ./packages/core-client/src/app/auth"
   },
   "private": true,
   "dependencies": {

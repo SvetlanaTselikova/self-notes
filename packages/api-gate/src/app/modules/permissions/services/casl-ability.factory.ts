@@ -5,7 +5,7 @@ import {
   createMongoAbility,
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
-import { Notes, Users } from '@self-notes-frontend/database';
+import { Notes, Users } from '@self-notes/database';
 import { Action, Subjects } from '../types';
 
 @Injectable()

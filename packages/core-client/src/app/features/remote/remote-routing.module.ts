@@ -7,7 +7,7 @@ import {
   NOTES_EDIT_PATH,
   NOTES_LIST_PATH,
   PAGE_TYPE,
-} from '@self-notes-frontend/utils';
+} from '@self-notes/utils';
 
 const routes: Routes = [
   {

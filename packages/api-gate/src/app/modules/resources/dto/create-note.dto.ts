@@ -1,4 +1,4 @@
-import { Notes, Users } from '@self-notes-frontend/database';
+import { Notes, Users } from '@self-notes/database';
 import {
   IsNotEmpty,
   IsEnum,

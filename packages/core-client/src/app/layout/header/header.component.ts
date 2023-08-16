@@ -8,7 +8,7 @@ import {
   LOGIN_PATH,
   NOTES_CREATE_PATH,
   NOTES_LIST_PATH,
-} from '@self-notes-frontend/utils';
+} from '@self-notes/utils';
 
 @Component({
   selector: 'app-header',
