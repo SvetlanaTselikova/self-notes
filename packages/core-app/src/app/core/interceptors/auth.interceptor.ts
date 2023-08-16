@@ -9,6 +9,7 @@ import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
+import { LOGIN_PATH } from '@self-notes-frontend/utils';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -23,8 +24,8 @@ export class AuthInterceptor implements HttpInterceptor {
               const clonedRequest = request.clone();
               return next.handle(clonedRequest);
             }),
-            catchError((refreshError: any) => {
-              this.router.navigate(['/login']);
+            catchError(() => {
+              this.router.navigate([LOGIN_PATH]);
               return EMPTY;
             })
           );

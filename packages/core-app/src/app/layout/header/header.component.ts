@@ -4,6 +4,11 @@ import { BehaviorSubject, EMPTY, catchError, map, take, tap } from 'rxjs';
 import { UserProfileService } from '../../core/services/user.profile';
 import { AuthService } from '../../auth/services/auth.service';
 import { Router } from '@angular/router';
+import {
+  LOGIN_PATH,
+  NOTES_CREATE_PATH,
+  NOTES_LIST_PATH,
+} from '@self-notes-frontend/utils';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +22,9 @@ export class HeaderComponent implements OnInit {
     protected authService: AuthService,
     protected router: Router
   ) {}
+
+  listPath = NOTES_LIST_PATH;
+  createPath = NOTES_CREATE_PATH;
 
   logoutInProgress$ = new BehaviorSubject<boolean>(false);
   logoutError$ = new BehaviorSubject<boolean>(false);
@@ -37,7 +45,7 @@ export class HeaderComponent implements OnInit {
         take(1),
         tap(() => {
           this.logoutInProgress$.next(false);
-          this.router.navigate(['/login']);
+          this.router.navigate([LOGIN_PATH]);
         }),
         catchError(() => {
           this.logoutInProgress$.next(false);

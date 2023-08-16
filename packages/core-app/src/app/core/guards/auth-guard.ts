@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserProfileService } from '../services/user.profile';
+import { NOTES_LIST_PATH } from '@self-notes-frontend/utils';
 
 export const authGuard = () => {
   const userProfileService = inject(UserProfileService);
@@ -8,7 +9,7 @@ export const authGuard = () => {
   const currentUser = userProfileService.getCurrentUserProfileValue();
 
   if (currentUser) {
-    router.navigate(['./list']);
+    router.navigate([NOTES_LIST_PATH]);
     return false;
   }
   return true;

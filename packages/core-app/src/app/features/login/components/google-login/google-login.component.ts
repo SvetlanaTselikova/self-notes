@@ -1,23 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   GoogleLoginProvider,
   SocialAuthService,
 } from '@abacritt/angularx-social-login';
-import { EMPTY, from, switchMap } from 'rxjs';
+import { EMPTY, Subject, from, switchMap, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'packages/core-app/src/app/auth/services/auth.service';
+import { NOTES_LIST_PATH } from '@self-notes-frontend/utils';
 
 @Component({
   selector: 'app-google-login',
   templateUrl: './google-login.component.html',
   styleUrls: ['./google-login.component.sass'],
 })
-export class GoogleLoginComponent implements OnInit {
+export class GoogleLoginComponent implements OnInit, OnDestroy {
   constructor(
     private socialAuthService: SocialAuthService,
     private router: Router,
     private authService: AuthService
   ) {}
+
+  destroy$ = new Subject<void>();
+
   ngOnInit(): void {
     this.subscribeAuthState();
   }
@@ -40,7 +44,8 @@ export class GoogleLoginComponent implements OnInit {
             );
           } else return EMPTY;
         }),
-        switchMap(() => from(this.router.navigate([this.getRedirectPath()])))
+        switchMap(() => from(this.router.navigate([this.getRedirectPath()]))),
+        takeUntil(this.destroy$)
       )
       .subscribe();
   }
@@ -48,6 +53,11 @@ export class GoogleLoginComponent implements OnInit {
   getRedirectPath() {
     const urlTree = this.router.parseUrl(this.router.url);
     const queryParams = urlTree.queryParams;
-    return queryParams?.['redirect'] || '/list';
+    return queryParams?.['redirect'] || NOTES_LIST_PATH;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

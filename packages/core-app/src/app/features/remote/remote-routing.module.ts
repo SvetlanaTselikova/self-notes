@@ -2,29 +2,35 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RemoteComponent } from './components';
 import { noAuthGuard } from '../../core/guards/no-auth-guard';
+import {
+  NOTES_CREATE_PATH,
+  NOTES_EDIT_PATH,
+  NOTES_LIST_PATH,
+  PAGE_TYPE,
+} from '@self-notes-frontend/utils';
 
 const routes: Routes = [
   {
-    path: 'list',
+    path: NOTES_LIST_PATH.slice(1),
     component: RemoteComponent,
     data: {
-      page: 'list',
+      page: PAGE_TYPE.list,
     },
     canActivate: [noAuthGuard],
   },
   {
-    path: 'create',
+    path: NOTES_CREATE_PATH.slice(1),
     component: RemoteComponent,
     data: {
-      page: 'create',
+      page: PAGE_TYPE.create,
     },
     canActivate: [noAuthGuard],
   },
   {
-    path: 'edit/:noteId',
+    path: `${NOTES_EDIT_PATH.slice(1)}/:noteId`,
     component: RemoteComponent,
     data: {
-      page: 'edit',
+      page: PAGE_TYPE.edit,
     },
     canActivate: [noAuthGuard],
   },

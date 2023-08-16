@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { authGuard } from '../../core/guards/auth-guard';
+import { LOGIN_PATH } from '@self-notes-frontend/utils';
 
 const routes: Routes = [
   {
@@ -10,7 +11,7 @@ const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'login',
+    path: LOGIN_PATH.slice(1),
     component: LoginComponent,
     canActivate: [authGuard],
   },

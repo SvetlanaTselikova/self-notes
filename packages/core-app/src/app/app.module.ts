@@ -5,8 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginModule, RemoteModule } from './features';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { SocialLoginModule } from '@abacritt/angularx-social-login';
-import { CoreModule } from './core/core.module';
 import { UserProfileService } from './core/services/user.profile';
 import { fetchUserProfile } from './core/facory/init-user.factory';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
@@ -28,8 +26,6 @@ import { MatMenuModule } from '@angular/material/menu';
     LoginModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    SocialLoginModule,
-    CoreModule,
     AuthModule.forRoot(authConfigFactory),
     RemoteModule,
     MatSidenavModule,

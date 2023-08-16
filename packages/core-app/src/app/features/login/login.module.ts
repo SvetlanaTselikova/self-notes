@@ -12,9 +12,7 @@ import {
   GoogleSigninButtonModule,
   SocialAuthServiceConfig,
 } from '@abacritt/angularx-social-login';
-
-const google_client_id =
-  '468339183665-90enpnkr09043fvb1te8i6d36k1nml59.apps.googleusercontent.com';
+import { GOOGLE_CLIENT_ID, GOOGLE_SCOPES } from '@self-notes-frontend/utils';
 
 @NgModule({
   imports: [
@@ -35,11 +33,8 @@ const google_client_id =
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(google_client_id, {
-              scopes: [
-                'https://www.googleapis.com/auth/userinfo.email',
-                'https://www.googleapis.com/auth/userinfo.profile',
-              ],
+            provider: new GoogleLoginProvider(GOOGLE_CLIENT_ID, {
+              scopes: GOOGLE_SCOPES,
             }),
           },
         ],

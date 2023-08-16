@@ -24,7 +24,7 @@ export const NotesList = () => {
           {data?.data?.length ? (
             <List>
               {Object.values(data?.data).map((note) => (
-                <NoteCard note={note} />
+                <NoteCard note={note} key={note.id} />
               ))}
             </List>
           ) : (

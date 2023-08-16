@@ -3,6 +3,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, merge, of } from 'rxjs';
+import { LOGIN_PATH } from '@self-notes-frontend/utils';
 
 @Component({
   selector: 'self-notes-frontend-root',
@@ -24,7 +25,7 @@ export class AppComponent {
       filter((event) => event instanceof NavigationEnd),
       map((event: any) => event.url)
     )
-  ).pipe(map((url: string) => url === '/login'));
+  ).pipe(map((url: string) => url === LOGIN_PATH));
 
   registerIcons() {
     this.matIconRegistry.addSvgIcon(
