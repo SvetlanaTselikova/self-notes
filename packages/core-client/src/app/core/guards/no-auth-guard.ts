@@ -9,7 +9,7 @@ export const noAuthGuard = () => {
   const currentUser = userProfileService.getCurrentUserProfileValue();
 
   if (!currentUser) {
-    router.navigate([LOGIN_PATH]);
+    router.navigate([LOGIN_PATH], { queryParams: { redirect: router.url } });
     return false;
   }
   return true;

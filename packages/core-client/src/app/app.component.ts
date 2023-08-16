@@ -25,7 +25,7 @@ export class AppComponent {
       filter((event) => event instanceof NavigationEnd),
       map((event: any) => event.url)
     )
-  ).pipe(map((url: string) => url === LOGIN_PATH));
+  ).pipe(map((url: string) => url.includes(LOGIN_PATH)));
 
   registerIcons() {
     this.matIconRegistry.addSvgIcon(

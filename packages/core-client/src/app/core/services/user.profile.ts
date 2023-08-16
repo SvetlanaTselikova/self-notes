@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, tap, catchError, EMPTY } from 'rxjs';
 import { AuthService } from '../../auth/services/auth.service';
+import { Users } from '../../auth';
 
 @Injectable({
   providedIn: 'root',
@@ -31,5 +32,9 @@ export class UserProfileService {
 
   resetUserProfile() {
     this.userProfileSubject.next(null);
+  }
+
+  setUserProfile(user: Users) {
+    this.userProfileSubject.next(user);
   }
 }

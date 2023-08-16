@@ -25,7 +25,12 @@ export class AuthInterceptor implements HttpInterceptor {
               return next.handle(clonedRequest);
             }),
             catchError(() => {
-              this.router.navigate([LOGIN_PATH]);
+              const queryParams = [LOGIN_PATH, '/'].includes(this.router.url)
+                ? {}
+                : { redirect: this.router.url };
+              this.router.navigate([LOGIN_PATH], {
+                queryParams,
+              });
               return EMPTY;
             })
           );

@@ -7,6 +7,7 @@ import { EMPTY, Subject, from, switchMap, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'packages/core-client/src/app/auth/services/auth.service';
 import { NOTES_LIST_PATH } from '@self-notes/utils';
+import { UserProfileService } from 'packages/core-client/src/app/core/services/user.profile';
 
 @Component({
   selector: 'app-google-login',
@@ -17,6 +18,7 @@ export class GoogleLoginComponent implements OnInit, OnDestroy {
   constructor(
     private socialAuthService: SocialAuthService,
     private router: Router,
+    private userProfileService: UserProfileService,
     private authService: AuthService
   ) {}
 
@@ -37,14 +39,23 @@ export class GoogleLoginComponent implements OnInit, OnDestroy {
               )
             ).pipe(
               switchMap((accessToken) =>
-                this.authService.authenticationControllerAuthenticate({
-                  token: accessToken,
-                })
+                this.authService
+                  .authenticationControllerAuthenticate({
+                    token: accessToken,
+                  })
+                  .pipe(
+                    switchMap((user) => {
+                      this.userProfileService.setUserProfile(user);
+                      return from(
+                        this.router.navigate([this.getRedirectPath()])
+                      );
+                    })
+                  )
               )
             );
           } else return EMPTY;
         }),
-        switchMap(() => from(this.router.navigate([this.getRedirectPath()]))),
+
         takeUntil(this.destroy$)
       )
       .subscribe();
