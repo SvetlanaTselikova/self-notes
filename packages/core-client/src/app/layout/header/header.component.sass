@@ -1,5 +1,12 @@
 @import '../../../variables'
 
+\:host
+  height: 100%
+  display: block
+
+
+$headerHeight: 64px
+
 .menu
   margin-left: 54px
 
@@ -15,9 +22,13 @@
   font-size: 18px
 
 .sidenav-container
-  height: 100%
+  height: calc(100vh - $headerHeight) 
   padding: 24px
 
 .profile-info
   cursor: auto
   background: white !important
+
+.toolbar 
+  width: 100%
+  height: $headerHeight
