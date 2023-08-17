@@ -19,21 +19,20 @@ const theme = createTheme({
 });
 
 export function App(props: RemoteComponentProps) {
-  const { page } = props;
+  const { page, messageBus } = props;
   const renderPage = () => {
     if (page === PAGE_TYPE.edit) {
-      return <NoteEdit />;
+      return <NoteEdit messageBus={messageBus} />;
     }
 
     if (page === PAGE_TYPE.create) {
-      return <NoteCreate />;
+      return <NoteCreate messageBus={messageBus} />;
     }
 
     if (page === PAGE_TYPE.list) {
-      return <NotesList />;
+      return <NotesList messageBus={messageBus} />;
     }
   };
-
   return (
     <StrictMode>
       <ThemeProvider theme={theme}>

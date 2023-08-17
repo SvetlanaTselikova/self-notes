@@ -16,9 +16,15 @@ import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
 import { format } from 'date-fns';
 import { Notes, useNotesControllerDeleteOneMutation } from '../../redux';
 import { ActionStatusSnackbar } from '../action-status-snackbar';
+import {
+  BaseMessageBus,
+  NavigateCommand,
+} from '@self-notes/clients-message-bus';
+import { NOTES_EDIT_PATH } from '@self-notes/utils';
 
 type Props = {
   note: Notes;
+  messageBus: BaseMessageBus;
 };
 
 const IconMoodMap = {
@@ -43,7 +49,14 @@ export const NoteCard = (props: Props) => {
         disablePadding
         secondaryAction={
           <React.Fragment>
-            <IconButton>
+            <IconButton
+              onClick={() =>
+                props.messageBus.sendCommand<NavigateCommand>({
+                  name: 'navigate',
+                  data: `${NOTES_EDIT_PATH}/${id}`,
+                })
+              }
+            >
               <EditIcon />
             </IconButton>
             <IconButton disabled={isDeleting} onClick={handleDeleteNote}>

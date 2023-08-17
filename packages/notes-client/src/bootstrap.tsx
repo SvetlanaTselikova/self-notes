@@ -9,17 +9,27 @@ import {
   NOTES_LIST_PATH,
 } from '@self-notes/utils';
 import { NotesList, NoteCreate, NoteEdit } from './pages';
+import { BaseMessageBus } from '@self-notes/clients-message-bus';
+
+const messageBusMock: BaseMessageBus = {
+  sendCommand: () => {},
+  sendQuery: () => {},
+  listenCommands: () => {},
+};
 
 const router = createBrowserRouter([
   {
     path: NOTES_LIST_PATH,
-    element: <NotesList />,
+    element: <NotesList messageBus={messageBusMock} />,
   },
   {
     path: NOTES_CREATE_PATH,
-    element: <NoteCreate />,
+    element: <NoteCreate messageBus={messageBusMock} />,
   },
-  { path: `${NOTES_EDIT_PATH}/:noteId`, element: <NoteEdit /> },
+  {
+    path: `${NOTES_EDIT_PATH}/:noteId`,
+    element: <NoteEdit messageBus={messageBusMock} />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

@@ -7,8 +7,17 @@ import {
   useNotesControllerUpdateMutation,
 } from '../../redux';
 import { useParams } from 'react-router-dom';
+import {
+  BaseMessageBus,
+  NavigateCommand,
+} from '@self-notes/clients-message-bus';
+import { NOTES_LIST_PATH } from '@self-notes/utils';
 
-export const NoteEdit = () => {
+type Props = {
+  messageBus: BaseMessageBus;
+};
+
+export const NoteEdit = (props: Props) => {
   const noteId =
     useParams().noteId || window.location.pathname.split('/')?.pop();
   const { data, isLoading, error } = useNotesControllerFindAllQuery({
@@ -20,6 +29,10 @@ export const NoteEdit = () => {
 
   const handleEditNote = async (data: UpdateNoteDto) => {
     await updateNote({ id: String(data.id), updateNoteDto: data });
+    props.messageBus?.sendCommand<NavigateCommand>({
+      name: 'navigate',
+      data: NOTES_LIST_PATH,
+    });
   };
 
   return (

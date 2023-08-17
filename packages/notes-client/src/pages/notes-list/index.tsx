@@ -3,11 +3,16 @@ import { Alert, CircularProgress, List, Pagination } from '@mui/material';
 import { NoteCard } from '../../components/note-card';
 import React from 'react';
 import styles from './index.module.sass';
+import { BaseMessageBus } from '@self-notes/clients-message-bus';
 
 const EMPTY_NOTES = 'There are no notes yet.';
 const ITEMS_PER_PAGE = 8;
 
-export const NotesList = () => {
+type Props = {
+  messageBus: BaseMessageBus;
+};
+
+export const NotesList = (props: Props) => {
   const [page, setPage] = React.useState(1);
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -47,10 +52,13 @@ export const NotesList = () => {
               {pagination}
               <List className={styles.list}>
                 {Object.values(data?.data).map((note) => (
-                  <NoteCard note={note} key={note.id} />
+                  <NoteCard
+                    note={note}
+                    key={note.id}
+                    messageBus={props.messageBus}
+                  />
                 ))}
               </List>
-              {pagination}
             </React.Fragment>
           ) : (
             EMPTY_NOTES

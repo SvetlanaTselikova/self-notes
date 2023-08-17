@@ -1,3 +1,5 @@
+import { BaseMessageBus } from '@self-notes/clients-message-bus';
+
 export enum PAGE_TYPE {
   list = 'list',
   create = 'create',
@@ -6,4 +8,5 @@ export enum PAGE_TYPE {
 
 export type RemoteComponentProps = {
   page: PAGE_TYPE;
+  messageBus: BaseMessageBus;
 };

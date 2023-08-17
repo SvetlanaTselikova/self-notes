@@ -17,6 +17,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MessageBus } from '@self-notes/clients-message-bus';
+import { subcribeCommands } from './core/facory/subscribe-commands';
+import { RouterCommandHandler } from './core/command-handlers';
+import { BaseCommandHandler } from 'libs/clients-message-bus/src/lib/types';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -37,11 +41,24 @@ import { MatMenuModule } from '@angular/material/menu';
   ],
   providers: [
     UserProfileService,
+    RouterCommandHandler,
+    {
+      provide: MessageBus,
+      useFactory: (...commandHandlers: BaseCommandHandler<any>[]) =>
+        new MessageBus(commandHandlers),
+      deps: [RouterCommandHandler],
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: fetchUserProfile,
       multi: true,
       deps: [UserProfileService],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: subcribeCommands,
+      multi: true,
+      deps: [MessageBus],
     },
     {
       provide: HTTP_INTERCEPTORS,
