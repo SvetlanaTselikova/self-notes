@@ -42,6 +42,7 @@ export const NoteCreate = (props: Props) => {
       onSubmit={handleAddNote}
       isSaving={isLoading}
       saveError={isError}
+      messageBus={messageBus}
     />
   );
 };

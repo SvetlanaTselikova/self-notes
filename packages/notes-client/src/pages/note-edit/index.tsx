@@ -63,6 +63,7 @@ export const NoteEdit = (props: Props) => {
           onSubmit={handleEditNote}
           isSaving={isSaving}
           saveError={saveError}
+          messageBus={messageBus}
         />
       ) : null}
     </React.Fragment>

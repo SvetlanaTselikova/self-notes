@@ -14,7 +14,7 @@
       aria-hidden="false"
       fontIcon="edit"
     ></mat-icon>
-    <h1>Self Notes</h1>
+    <h1 class="cursor-pointer" [routerLink]="listPath">Self Notes</h1>
     <div class="menu" *ngIf="!(isSmallScreen$ | async)">
       <a mat-button [routerLink]="listPath"> My Notes </a>
       <a mat-raised-button color="accent" [routerLink]="createPath">

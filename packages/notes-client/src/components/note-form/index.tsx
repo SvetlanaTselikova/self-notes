@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   FormLabel,
   FormHelperText,
+  Button,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
@@ -19,8 +20,18 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { NoteFormValues } from '../../redux/types';
 import { CreateNoteDto, DayMood, Notes, UpdateNoteDto } from '../../redux';
+import styles from './index.module.sass';
+import {
+  BaseMessageBus,
+  NavigateCommand,
+} from '@self-notes/clients-message-bus';
+import { NOTES_LIST_PATH } from '@self-notes/utils';
 
-type CommonProps = { isSaving: boolean; saveError: boolean };
+type CommonProps = {
+  isSaving: boolean;
+  saveError: boolean;
+  messageBus: BaseMessageBus;
+};
 
 type CreateProps = {
   onSubmit: (data: CreateNoteDto) => Promise<void>;
@@ -45,7 +56,7 @@ const validationSchema = yup.object({
 });
 
 export const NoteForm = (props: CreateProps | EditProps) => {
-  const { mode, onSubmit, isSaving } = props;
+  const { mode, onSubmit, isSaving, messageBus } = props;
 
   const renderTitle = () => (
     <h1>{mode === 'edit' ? 'Edit note' : 'Create note'}</h1>
@@ -69,7 +80,7 @@ export const NoteForm = (props: CreateProps | EditProps) => {
 
   const formik = useFormik<NoteFormValues>({
     initialValues: getInitialValues(),
-    validationSchema: validationSchema,
+    // validationSchema: validationSchema,
     onSubmit: async (values) => {
       if (mode === 'edit') {
         await onSubmit({
@@ -114,7 +125,9 @@ export const NoteForm = (props: CreateProps | EditProps) => {
         <RadioGroup
           name="mood"
           value={formik.values.dayMood}
-          onChange={formik.handleChange}
+          onChange={(event) => {
+            formik.setFieldValue('dayMood', event.target.value);
+          }}
           onBlur={formik.handleBlur}
         >
           <FormControlLabel
@@ -176,6 +189,18 @@ export const NoteForm = (props: CreateProps | EditProps) => {
       >
         <span>Save</span>
       </LoadingButton>
+      <Button
+        variant="outlined"
+        className={styles.cancelBtn}
+        onClick={() =>
+          props.messageBus.sendCommand<NavigateCommand>({
+            name: 'navigate',
+            data: NOTES_LIST_PATH,
+          })
+        }
+      >
+        Cancel
+      </Button>
     </form>
   );
 };
