@@ -5,7 +5,7 @@ import {
 } from 'libs/clients-message-bus/src/lib/types';
 import { UserProfileService } from '../services';
 import { Users } from '../../auth';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class ProfileQueryHandler
@@ -15,7 +15,7 @@ export class ProfileQueryHandler
 
   queryName: ProfileQuery['name'] = 'getProfile';
 
-  execute(querySubject: Subject<Users>) {
+  execute(querySubject: BehaviorSubject<Users>) {
     const currentProfile =
       this.userProfileService.getCurrentUserProfileValue() as Users;
     querySubject.next(currentProfile);

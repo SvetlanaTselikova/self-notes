@@ -54,6 +54,10 @@ export interface ProfileQuery extends BaseQuery {
   name: 'getProfile';
 }
 
+export interface RefreshTokenQuery extends BaseQuery {
+  name: 'refreshToken';
+}
+
 export type BaseQueryHandler<IQuery extends BaseQuery, IQueryResponse> = {
   queryName: IQuery['name'];
   execute: (

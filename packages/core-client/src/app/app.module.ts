@@ -27,7 +27,10 @@ import {
 } from './core/command-handlers';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserProfileService } from './core/services';
-import { ProfileQueryHandler } from './core/query-handlers';
+import {
+  ProfileQueryHandler,
+  RefreshTokenHandler,
+} from './core/query-handlers';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -51,21 +54,24 @@ import { ProfileQueryHandler } from './core/query-handlers';
     RouterCommandHandler,
     NotificationCommandHandler,
     ProfileQueryHandler,
+    RefreshTokenHandler,
     {
       provide: MessageBus,
       useFactory: (
         routerCommandHandler,
         notificationCommandHandler,
-        profileQueryHandler
+        profileQueryHandler,
+        refreshTokenHandler
       ) =>
         new MessageBus(
           [routerCommandHandler, notificationCommandHandler],
-          [profileQueryHandler]
+          [profileQueryHandler, refreshTokenHandler]
         ),
       deps: [
         RouterCommandHandler,
         NotificationCommandHandler,
         ProfileQueryHandler,
+        RefreshTokenHandler,
       ],
     },
     {

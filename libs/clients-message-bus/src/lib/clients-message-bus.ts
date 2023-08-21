@@ -60,7 +60,7 @@ export class MessageBus implements BaseMessageBus {
     });
 
     return querySubject.pipe(
-      filter((val) => !!val),
+      filter((val) => val !== null),
       map((val) => val as IQueryResponse),
       take(1)
     );
