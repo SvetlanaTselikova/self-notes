@@ -3,11 +3,20 @@ import {
   GoogleLoginProvider,
   SocialAuthService,
 } from '@abacritt/angularx-social-login';
-import { EMPTY, Subject, from, switchMap, takeUntil } from 'rxjs';
+import {
+  EMPTY,
+  Subject,
+  catchError,
+  from,
+  switchMap,
+  takeUntil,
+  throwError,
+} from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'packages/core-client/src/app/auth/services/auth.service';
 import { NOTES_LIST_PATH } from '@self-notes/utils';
 import { UserProfileService } from 'packages/core-client/src/app/core/services/user.profile';
+import { NotificationService } from 'packages/core-client/src/app/core/services';
 
 @Component({
   selector: 'app-google-login',
@@ -19,7 +28,8 @@ export class GoogleLoginComponent implements OnInit, OnDestroy {
     private socialAuthService: SocialAuthService,
     private router: Router,
     private userProfileService: UserProfileService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
 
   destroy$ = new Subject<void>();
@@ -53,9 +63,13 @@ export class GoogleLoginComponent implements OnInit, OnDestroy {
                   )
               )
             );
-          } else return EMPTY;
+          } else return throwError(() => new Error('User is not found'));
         }),
+        catchError((err) => {
+          this.notificationService.showErrorNotification(err?.message || err);
 
+          return EMPTY;
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe();

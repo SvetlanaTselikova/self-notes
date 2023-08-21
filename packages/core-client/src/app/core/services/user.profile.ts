@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, tap, catchError, EMPTY } from 'rxjs';
+import { Observable, BehaviorSubject, tap, catchError } from 'rxjs';
 import { AuthService } from '../../auth/services/auth.service';
 import { Users } from '../../auth';
 
@@ -7,10 +7,10 @@ import { Users } from '../../auth';
   providedIn: 'root',
 })
 export class UserProfileService {
-  private userProfileSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
-    null
-  );
-  userProfile$: Observable<any> = this.userProfileSubject.asObservable();
+  private userProfileSubject: BehaviorSubject<Users | null> =
+    new BehaviorSubject<Users | null>(null);
+  userProfile$: Observable<Users | null> =
+    this.userProfileSubject.asObservable();
 
   constructor(private authService: AuthService) {}
 
@@ -19,14 +19,14 @@ export class UserProfileService {
       tap((user) => {
         this.userProfileSubject.next(user);
       }),
-      catchError(() => {
+      catchError((err) => {
         this.userProfileSubject.next(null);
-        return EMPTY;
+        return err;
       })
     );
   }
 
-  getCurrentUserProfileValue(): any {
+  getCurrentUserProfileValue() {
     return this.userProfileSubject.value;
   }
 

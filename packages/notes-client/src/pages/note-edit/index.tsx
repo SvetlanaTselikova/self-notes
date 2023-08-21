@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import {
   BaseMessageBus,
   NavigateCommand,
+  NotificationCommand,
 } from '@self-notes/clients-message-bus';
 import { NOTES_LIST_PATH } from '@self-notes/utils';
 
@@ -27,12 +28,26 @@ export const NoteEdit = (props: Props) => {
   const [updateNote, { isLoading: isSaving, isError: saveError }] =
     useNotesControllerUpdateMutation();
 
+  const { messageBus } = props;
+
   const handleEditNote = async (data: UpdateNoteDto) => {
-    await updateNote({ id: String(data.id), updateNoteDto: data });
-    props.messageBus?.sendCommand<NavigateCommand>({
-      name: 'navigate',
-      data: NOTES_LIST_PATH,
-    });
+    await updateNote({ id: String(data.id), updateNoteDto: data }).then(
+      (response) => {
+        if (!('error' in response)) {
+          messageBus.sendCommand<NotificationCommand>({
+            name: 'showNotification',
+            data: {
+              type: 'success',
+              message: 'Successfuly updated',
+            },
+          });
+          messageBus.sendCommand<NavigateCommand>({
+            name: 'navigate',
+            data: NOTES_LIST_PATH,
+          });
+        }
+      }
+    );
   };
 
   return (

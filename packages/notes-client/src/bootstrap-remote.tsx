@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { Provider } from 'react-redux';
-import { store } from './redux';
+import { getStore } from './redux';
 import { NoteCreate, NoteEdit } from './pages';
 
 import { NotesList } from './pages';
@@ -33,6 +33,8 @@ export function App(props: RemoteComponentProps) {
       return <NotesList messageBus={messageBus} />;
     }
   };
+  const store = getStore({ messageBus });
+
   return (
     <StrictMode>
       <ThemeProvider theme={theme}>

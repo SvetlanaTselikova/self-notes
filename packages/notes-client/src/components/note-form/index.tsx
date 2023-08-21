@@ -18,7 +18,6 @@ import * as yup from 'yup';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { NoteFormValues } from '../../redux/types';
-import { ActionStatusSnackbar } from '../action-status-snackbar';
 import { CreateNoteDto, DayMood, Notes, UpdateNoteDto } from '../../redux';
 
 type CommonProps = { isSaving: boolean; saveError: boolean };
@@ -46,7 +45,7 @@ const validationSchema = yup.object({
 });
 
 export const NoteForm = (props: CreateProps | EditProps) => {
-  const { mode, onSubmit, isSaving, saveError } = props;
+  const { mode, onSubmit, isSaving } = props;
 
   const renderTitle = () => (
     <h1>{mode === 'edit' ? 'Edit note' : 'Create note'}</h1>
@@ -87,7 +86,6 @@ export const NoteForm = (props: CreateProps | EditProps) => {
       onSubmit={formik.handleSubmit}
       style={{ width: '100%', maxWidth: '600px' }}
     >
-      <ActionStatusSnackbar isError={saveError} isLoading={isSaving} />
       {renderTitle()}
 
       <LocalizationProvider dateAdapter={AdapterDateFns}>

@@ -32,6 +32,14 @@ export interface NavigateCommand extends BaseCommand {
   data: string;
 }
 
+export interface NotificationCommand extends BaseCommand {
+  name: 'showNotification';
+  data: {
+    type: 'success' | 'error';
+    message: string;
+  };
+}
+
 export interface BaseMessageBus {
   sendQuery: <IQuery extends BaseQuery>(query: IQuery) => void;
   sendCommand: <ICommand extends BaseCommand>(command: ICommand) => void;

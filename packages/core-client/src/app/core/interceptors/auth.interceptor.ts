@@ -5,15 +5,20 @@ import {
   HttpHandler,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { EMPTY, Observable, throwError } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 import { LOGIN_PATH } from '@self-notes/utils';
+import { NotificationService } from '../services';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
     return next.handle(request).pipe(
@@ -25,6 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
               return next.handle(clonedRequest);
             }),
             catchError(() => {
+              this.notificationService.showErrorNotification('Unauthorized');
               const queryParams = [LOGIN_PATH, '/'].includes(this.router.url)
                 ? {}
                 : { redirect: this.router.url };
@@ -35,7 +41,8 @@ export class AuthInterceptor implements HttpInterceptor {
             })
           );
         }
-        return throwError(error);
+        this.notificationService.showErrorNotification(error?.message);
+        return EMPTY;
       })
     );
   }

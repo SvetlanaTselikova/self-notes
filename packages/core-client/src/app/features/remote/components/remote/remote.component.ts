@@ -8,6 +8,7 @@ import * as React from 'react';
 import { ActivatedRoute } from '@angular/router';
 import { createRoot } from 'react-dom/client';
 import { MessageBus } from '@self-notes/clients-message-bus';
+import { NotificationService } from 'packages/core-client/src/app/core/services';
 
 const CONTAINER_ELEMENT_NAME = 'injectedApp';
 
@@ -24,7 +25,8 @@ export class RemoteComponent implements AfterContentInit {
 
   constructor(
     private route: ActivatedRoute,
-    private messageBusService: MessageBus
+    private messageBusService: MessageBus,
+    private notificationService: NotificationService
   ) {}
 
   async ngAfterContentInit() {
@@ -41,7 +43,9 @@ export class RemoteComponent implements AfterContentInit {
         );
       });
     } catch (error) {
-      console.log('Erorr', error);
+      this.notificationService.showErrorNotification(
+        'Error while loading remote component'
+      );
     }
   }
 }

@@ -1,5 +1,5 @@
 import { useNotesControllerFindAllQuery } from '../../redux';
-import { Alert, CircularProgress, List, Pagination } from '@mui/material';
+import { CircularProgress, List, Pagination } from '@mui/material';
 import { NoteCard } from '../../components/note-card';
 import React from 'react';
 import styles from './index.module.sass';
@@ -21,7 +21,7 @@ export const NotesList = (props: Props) => {
     setPage(value);
   };
 
-  const { data, isLoading, error } = useNotesControllerFindAllQuery({
+  const { data, isLoading } = useNotesControllerFindAllQuery({
     page,
     limit: ITEMS_PER_PAGE,
   });
@@ -39,9 +39,7 @@ export const NotesList = (props: Props) => {
 
   return (
     <div className={styles.wrapper}>
-      {error ? (
-        <Alert severity="error">Oops, somthing went wrong...</Alert>
-      ) : isLoading ? (
+      {isLoading ? (
         <CircularProgress />
       ) : data?.data ? (
         <React.Fragment>

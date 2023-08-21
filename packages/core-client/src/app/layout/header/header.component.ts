@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { BehaviorSubject, EMPTY, catchError, map, take, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, take, tap } from 'rxjs';
 import { UserProfileService } from '../../core/services/user.profile';
 import { AuthService } from '../../auth/services/auth.service';
 import { Router } from '@angular/router';
@@ -27,7 +27,6 @@ export class HeaderComponent implements OnInit {
   createPath = NOTES_CREATE_PATH;
 
   logoutInProgress$ = new BehaviorSubject<boolean>(false);
-  logoutError$ = new BehaviorSubject<boolean>(false);
 
   userProfile$ = this.userProfileService.userProfile$;
 
@@ -37,7 +36,6 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.logoutInProgress$.next(true);
-    this.logoutError$.next(false);
 
     this.authService
       .authenticationControllerLogOut()
@@ -50,11 +48,10 @@ export class HeaderComponent implements OnInit {
             queryParams: { redirect: this.router.url },
           });
         }),
-        catchError(() => {
+        catchError((err) => {
           this.logoutInProgress$.next(false);
-          this.logoutError$.next(true);
 
-          return EMPTY;
+          return err;
         })
       )
       .subscribe();

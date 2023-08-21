@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { store } from './redux';
+import { getStore } from './redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import {
   NOTES_CREATE_PATH,
@@ -31,6 +31,8 @@ const router = createBrowserRouter([
     element: <NoteEdit messageBus={messageBusMock} />,
   },
 ]);
+
+const store = getStore({ messageBus: messageBusMock });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>

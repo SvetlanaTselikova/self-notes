@@ -15,10 +15,10 @@ import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
 
 import { format } from 'date-fns';
 import { Notes, useNotesControllerDeleteOneMutation } from '../../redux';
-import { ActionStatusSnackbar } from '../action-status-snackbar';
 import {
   BaseMessageBus,
   NavigateCommand,
+  NotificationCommand,
 } from '@self-notes/clients-message-bus';
 import { NOTES_EDIT_PATH } from '@self-notes/utils';
 
@@ -34,17 +34,27 @@ const IconMoodMap = {
 };
 
 export const NoteCard = (props: Props) => {
-  const { id, text, date, dayMood } = props.note;
+  const { note, messageBus } = props;
+  const { id, text, date, dayMood } = note;
   const [deleteNote, { isError, isLoading: isDeleting }] =
     useNotesControllerDeleteOneMutation();
 
   const handleDeleteNote = async () => {
-    await deleteNote({ id: String(id) });
+    await deleteNote({ id: String(id) }).then((response) => {
+      if (!('error' in response)) {
+        messageBus.sendCommand<NotificationCommand>({
+          name: 'showNotification',
+          data: {
+            type: 'success',
+            message: 'Successfuly removed',
+          },
+        });
+      }
+    });
   };
 
   return (
     <React.Fragment key={id}>
-      <ActionStatusSnackbar isError={isError} isLoading={isDeleting} />
       <ListItem
         disablePadding
         secondaryAction={

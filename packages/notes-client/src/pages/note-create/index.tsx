@@ -4,6 +4,7 @@ import { CreateNoteDto, useNotesControllerCreateMutation } from '../../redux';
 import {
   BaseMessageBus,
   NavigateCommand,
+  NotificationCommand,
 } from '@self-notes/clients-message-bus';
 
 type Props = {
@@ -11,16 +12,27 @@ type Props = {
 };
 
 export const NoteCreate = (props: Props) => {
+  const { messageBus } = props;
   const [createNote, { isError, isLoading }] =
     useNotesControllerCreateMutation();
 
   const handleAddNote = async (data: CreateNoteDto) => {
     await createNote({
       createNoteDto: data,
-    });
-    props.messageBus?.sendCommand<NavigateCommand>({
-      name: 'navigate',
-      data: NOTES_LIST_PATH,
+    }).then((response) => {
+      if (!('error' in response)) {
+        messageBus.sendCommand<NotificationCommand>({
+          name: 'showNotification',
+          data: {
+            type: 'success',
+            message: 'Successfuly created',
+          },
+        });
+        messageBus.sendCommand<NavigateCommand>({
+          name: 'navigate',
+          data: NOTES_LIST_PATH,
+        });
+      }
     });
   };
 
