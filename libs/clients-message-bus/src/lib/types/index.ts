@@ -1,6 +1,8 @@
+import { BehaviorSubject, Observable } from 'rxjs';
+
 export interface BaseQuery {
   name: string;
-  data: any;
+  data?: any;
 }
 
 export interface BaseCommand {
@@ -16,7 +18,7 @@ export enum MessageType {
 export type BaseMessage =
   | {
       messageType: MessageType.query;
-      messageData: BaseQuery;
+      messageData: BaseQuery & { querySubject: BehaviorSubject<any> };
     }
   | { messageType: MessageType.command; messageData: BaseCommand };
 
@@ -41,7 +43,21 @@ export interface NotificationCommand extends BaseCommand {
 }
 
 export interface BaseMessageBus {
-  sendQuery: <IQuery extends BaseQuery>(query: IQuery) => void;
+  sendQuery: <IQuery extends BaseQuery, IQueryResponse>(
+    query: IQuery
+  ) => Observable<IQueryResponse>;
   sendCommand: <ICommand extends BaseCommand>(command: ICommand) => void;
   listenCommands: () => void;
 }
+
+export interface ProfileQuery extends BaseQuery {
+  name: 'getProfile';
+}
+
+export type BaseQueryHandler<IQuery extends BaseQuery, IQueryResponse> = {
+  queryName: IQuery['name'];
+  execute: (
+    querySubject: BehaviorSubject<IQueryResponse>,
+    data: IQuery['data']
+  ) => void;
+};

@@ -1,9 +1,10 @@
-import { useNotesControllerFindAllQuery } from '../../redux';
+import { Users, useNotesControllerFindAllQuery } from '../../redux';
 import { CircularProgress, List, Pagination } from '@mui/material';
 import { NoteCard } from '../../components/note-card';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './index.module.sass';
-import { BaseMessageBus } from '@self-notes/clients-message-bus';
+import { BaseMessageBus, ProfileQuery } from '@self-notes/clients-message-bus';
+import { from, map, tap } from 'rxjs';
 
 const EMPTY_NOTES = 'There are no notes yet.';
 const ITEMS_PER_PAGE = 8;
@@ -21,10 +22,28 @@ export const NotesList = (props: Props) => {
     setPage(value);
   };
 
-  const { data, isLoading } = useNotesControllerFindAllQuery({
-    page,
-    limit: ITEMS_PER_PAGE,
-  });
+  const [userId, setUserId] = React.useState<number | null>(null);
+
+  useEffect(() => {
+    props.messageBus
+      .sendQuery<ProfileQuery, Users>({ name: 'getProfile' })
+      .pipe(
+        map((user) => user?.id),
+        tap((userId) => {
+          setUserId(userId);
+        })
+      )
+      .subscribe();
+  }, []);
+
+  const { data, isLoading } = useNotesControllerFindAllQuery(
+    {
+      page,
+      limit: ITEMS_PER_PAGE,
+      'filter.createdBy': userId,
+    },
+    { skip: !userId }
+  );
 
   const pagination = (
     <Pagination

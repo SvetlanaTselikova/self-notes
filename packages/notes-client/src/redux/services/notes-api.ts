@@ -17,6 +17,7 @@ const injectedRtkApi = api.injectEndpoints({
           searchBy: queryArg.searchBy,
           sortBy: queryArg.sortBy,
           'filter.id': queryArg['filter.id'],
+          'filter.createdBy': queryArg['filter.createdBy'],
         },
       }),
       providesTags: (result, error, arg) =>
@@ -32,7 +33,7 @@ const injectedRtkApi = api.injectEndpoints({
       NotesControllerCreateApiArg
     >({
       query: (queryArg) => ({
-        url: `${API_PREFIX}${NOTES_API}`,
+        url: `${API_PREFIX}${NOTES_API}ss`,
         method: 'POST',
         body: queryArg.createNoteDto,
       }),
@@ -106,6 +107,7 @@ export type NotesControllerFindAllApiArg = {
   searchBy?: string[];
   sortBy?: any;
   'filter.id'?: any;
+  'filter.createdBy'?: any;
 };
 export type NotesControllerCreateApiResponse =
   /** status 200  */

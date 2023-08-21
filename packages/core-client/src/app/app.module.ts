@@ -5,10 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginModule, RemoteModule } from './features';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { fetchUserProfile } from './core/facory/init-user.factory';
+import {
+  fetchUserProfile,
+  authConfigFactory,
+  subcribeCommands,
+  subcribeQueries,
+} from './core/factory';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { AuthModule } from './auth/auth.module';
-import { authConfigFactory } from './core/facory/auth-config.factory';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { HeaderComponent } from './layout/header/header.component';
@@ -17,14 +21,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MessageBus } from '@self-notes/clients-message-bus';
-import { subcribeCommands } from './core/facory/subscribe-commands';
 import {
   NotificationCommandHandler,
   RouterCommandHandler,
 } from './core/command-handlers';
-import { BaseCommandHandler } from 'libs/clients-message-bus/src/lib/types';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserProfileService } from './core/services';
+import { ProfileQueryHandler } from './core/query-handlers';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -47,11 +50,23 @@ import { UserProfileService } from './core/services';
   providers: [
     RouterCommandHandler,
     NotificationCommandHandler,
+    ProfileQueryHandler,
     {
       provide: MessageBus,
-      useFactory: (...commandHandlers: BaseCommandHandler<any>[]) =>
-        new MessageBus(commandHandlers),
-      deps: [RouterCommandHandler, NotificationCommandHandler],
+      useFactory: (
+        routerCommandHandler,
+        notificationCommandHandler,
+        profileQueryHandler
+      ) =>
+        new MessageBus(
+          [routerCommandHandler, notificationCommandHandler],
+          [profileQueryHandler]
+        ),
+      deps: [
+        RouterCommandHandler,
+        NotificationCommandHandler,
+        ProfileQueryHandler,
+      ],
     },
     {
       provide: APP_INITIALIZER,
@@ -62,6 +77,12 @@ import { UserProfileService } from './core/services';
     {
       provide: APP_INITIALIZER,
       useFactory: subcribeCommands,
+      multi: true,
+      deps: [MessageBus],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: subcribeQueries,
       multi: true,
       deps: [MessageBus],
     },

@@ -10,10 +10,13 @@ import {
 } from '@self-notes/utils';
 import { NotesList, NoteCreate, NoteEdit } from './pages';
 import { BaseMessageBus } from '@self-notes/clients-message-bus';
+import { Subject } from 'rxjs';
 
 const messageBusMock: BaseMessageBus = {
   sendCommand: () => {},
-  sendQuery: () => {},
+  sendQuery: () => {
+    return new Subject();
+  },
   listenCommands: () => {},
 };
 
