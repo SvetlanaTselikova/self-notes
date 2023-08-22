@@ -30,7 +30,6 @@ export class AuthInterceptor implements HttpInterceptor {
               return next.handle(clonedRequest);
             }),
             catchError(() => {
-              this.notificationService.showErrorNotification('Unauthorized');
               const queryParams = [LOGIN_PATH, '/'].includes(this.router.url)
                 ? {}
                 : { redirect: this.router.url };
@@ -41,7 +40,6 @@ export class AuthInterceptor implements HttpInterceptor {
             })
           );
         }
-        this.notificationService.showErrorNotification(error?.message);
         return EMPTY;
       })
     );
