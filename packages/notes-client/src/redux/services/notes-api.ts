@@ -33,7 +33,7 @@ const injectedRtkApi = api.injectEndpoints({
       NotesControllerCreateApiArg
     >({
       query: (queryArg) => ({
-        url: `${API_PREFIX}${NOTES_API}ss`,
+        url: `${API_PREFIX}${NOTES_API}`,
         method: 'POST',
         body: queryArg.createNoteDto,
       }),

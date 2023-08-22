@@ -24,6 +24,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { CreatedByPipe } from '../pipes';
 
 @ApiTags('resources')
 @ApiCookieAuth()
@@ -49,7 +50,7 @@ export class NotesController implements ResourceCntroller<Notes> {
     type: Notes,
   })
   @ApiUnauthorizedResponse()
-  public async create(@Body() body: CreateNoteDto) {
+  public async create(@Body(CreatedByPipe) body: CreateNoteDto) {
     return this.service.create(body);
   }
 

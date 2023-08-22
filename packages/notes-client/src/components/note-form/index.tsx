@@ -80,7 +80,7 @@ export const NoteForm = (props: CreateProps | EditProps) => {
 
   const formik = useFormik<NoteFormValues>({
     initialValues: getInitialValues(),
-    // validationSchema: validationSchema,
+    validationSchema: validationSchema,
     onSubmit: async (values) => {
       if (mode === 'edit') {
         await onSubmit({

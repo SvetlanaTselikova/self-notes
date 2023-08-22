@@ -6,6 +6,7 @@ import { NotesController } from './controllers';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PermissionsModule } from '../permissions/permissions.module';
 import { AuthenticationModule } from '../authentication/authentication.module';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([Notes, Users]),
