@@ -1,21 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { notesApi } from './services/notes-api';
-import { getErrorHandleMiddleware } from './middlewares/error-handle.middleware';
-import { BaseMessageBus } from '@self-notes/clients-message-bus';
 
-type StoreProps = { messageBus: BaseMessageBus };
-
-export const getStore = (props: StoreProps) =>
+export const getStore = (api: any) =>
   configureStore({
     reducer: {
-      [notesApi.reducerPath]: notesApi.reducer,
+      [api.reducerPath]: api.reducer,
     },
     devTools: process.env.NODE_ENV !== 'production',
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({}).concat([
-        notesApi.middleware,
-        getErrorHandleMiddleware(props.messageBus),
-      ]),
+      getDefaultMiddleware({}).concat([api.middleware]),
   });
 
 export type RootState = ReturnType<ReturnType<typeof getStore>['getState']>;

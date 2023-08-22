@@ -1,10 +1,11 @@
-import { Users, useNotesControllerFindAllQuery } from '../../redux';
+import { Users } from '../../redux';
 import { CircularProgress, List, Pagination } from '@mui/material';
 import { NoteCard } from '../../components/note-card';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styles from './index.module.sass';
 import { BaseMessageBus, ProfileQuery } from '@self-notes/clients-message-bus';
 import { from, map, tap } from 'rxjs';
+import { ApiContext } from '../../contexts/api';
 
 const EMPTY_NOTES = 'There are no notes yet.';
 const ITEMS_PER_PAGE = 8;
@@ -36,7 +37,8 @@ export const NotesList = (props: Props) => {
       .subscribe();
   }, []);
 
-  const { data, isLoading } = useNotesControllerFindAllQuery(
+  const api = useContext(ApiContext)!;
+  const { data, isLoading } = api.useNotesControllerFindAllQuery(
     {
       page,
       limit: ITEMS_PER_PAGE,

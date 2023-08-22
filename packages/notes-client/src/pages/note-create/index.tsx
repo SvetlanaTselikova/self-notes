@@ -1,11 +1,13 @@
 import { NOTES_LIST_PATH } from '@self-notes/utils';
 import { NoteForm } from '../../components';
-import { CreateNoteDto, useNotesControllerCreateMutation } from '../../redux';
+import { CreateNoteDto } from '../../redux';
 import {
   BaseMessageBus,
   NavigateCommand,
   NotificationCommand,
 } from '@self-notes/clients-message-bus';
+import { useContext } from 'react';
+import { ApiContext } from '../../contexts/api';
 
 type Props = {
   messageBus: BaseMessageBus;
@@ -13,8 +15,10 @@ type Props = {
 
 export const NoteCreate = (props: Props) => {
   const { messageBus } = props;
+
+  const api = useContext(ApiContext)!;
   const [createNote, { isError, isLoading }] =
-    useNotesControllerCreateMutation();
+    api.useNotesControllerCreateMutation();
 
   const handleAddNote = async (data: CreateNoteDto) => {
     await createNote({

@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { getStore } from './redux';
+import { createCustomApi, getStore } from './redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import {
   NOTES_CREATE_PATH,
@@ -11,6 +11,7 @@ import {
 import { NotesList, NoteCreate, NoteEdit } from './pages';
 import { BaseMessageBus } from '@self-notes/clients-message-bus';
 import { Subject } from 'rxjs';
+import { ApiContext } from './contexts/api';
 
 const messageBusMock: BaseMessageBus = {
   sendCommand: () => {},
@@ -35,12 +36,15 @@ const router = createBrowserRouter([
   },
 ]);
 
-const store = getStore({ messageBus: messageBusMock });
+const apiData = createCustomApi({ messageBus: messageBusMock });
+const store = getStore(apiData.api);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <ApiContext.Provider value={apiData}>
+        <RouterProvider router={router} />
+      </ApiContext.Provider>
     </Provider>
   </StrictMode>
 );

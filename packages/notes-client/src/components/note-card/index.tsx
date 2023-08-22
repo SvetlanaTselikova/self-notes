@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   ListItemIcon,
   ListItemText,
@@ -14,13 +14,14 @@ import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDiss
 import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
 
 import { format } from 'date-fns';
-import { Notes, useNotesControllerDeleteOneMutation } from '../../redux';
+import { Notes } from '../../redux';
 import {
   BaseMessageBus,
   NavigateCommand,
   NotificationCommand,
 } from '@self-notes/clients-message-bus';
 import { NOTES_EDIT_PATH } from '@self-notes/utils';
+import { ApiContext } from '../../contexts/api';
 
 type Props = {
   note: Notes;
@@ -36,8 +37,10 @@ const IconMoodMap = {
 export const NoteCard = (props: Props) => {
   const { note, messageBus } = props;
   const { id, text, date, dayMood } = note;
+
+  const api = useContext(ApiContext)!;
   const [deleteNote, { isError, isLoading: isDeleting }] =
-    useNotesControllerDeleteOneMutation();
+    api.useNotesControllerDeleteOneMutation();
 
   const handleDeleteNote = async () => {
     await deleteNote({ id: String(id) }).then((response) => {

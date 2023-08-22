@@ -1,1 +1,1 @@
-export * from './notes-api';
+export * from './api';

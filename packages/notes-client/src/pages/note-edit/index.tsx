@@ -1,11 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Alert, CircularProgress } from '@mui/material';
 import { NoteForm } from '../../components';
-import {
-  UpdateNoteDto,
-  useNotesControllerFindAllQuery,
-  useNotesControllerUpdateMutation,
-} from '../../redux';
+import { UpdateNoteDto } from '../../redux';
 import { useParams } from 'react-router-dom';
 import {
   BaseMessageBus,
@@ -13,6 +9,7 @@ import {
   NotificationCommand,
 } from '@self-notes/clients-message-bus';
 import { NOTES_LIST_PATH } from '@self-notes/utils';
+import { ApiContext } from '../../contexts/api';
 
 type Props = {
   messageBus: BaseMessageBus;
@@ -21,12 +18,13 @@ type Props = {
 export const NoteEdit = (props: Props) => {
   const noteId =
     useParams().noteId || window.location.pathname.split('/')?.pop();
-  const { data, isLoading, error } = useNotesControllerFindAllQuery({
+  const api = useContext(ApiContext)!;
+  const { data, isLoading, error } = api.useNotesControllerFindAllQuery({
     'filter.id': `$eq:${noteId}`,
   });
   const note = data?.data?.[0];
   const [updateNote, { isLoading: isSaving, isError: saveError }] =
-    useNotesControllerUpdateMutation();
+    api.useNotesControllerUpdateMutation();
 
   const { messageBus } = props;
 
