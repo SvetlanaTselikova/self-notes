@@ -1,4 +1,9 @@
-import { APP_INITIALIZER, ErrorHandler, NgModule, isDevMode } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ErrorHandler,
+  NgModule,
+  isDevMode,
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -32,6 +37,7 @@ import {
   RefreshTokenHandler,
 } from './core/query-handlers';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { SocialLoginModule } from '@abacritt/angularx-social-login';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, PageNotFoundComponent],
@@ -50,11 +56,12 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     MatButtonModule,
     MatMenuModule,
     MatSnackBarModule,
+    SocialLoginModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
   providers: [

@@ -3,15 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { RemoteComponent } from './components';
 import { noAuthGuard } from '../../core/guards/no-auth-guard';
 import {
-  NOTES_CREATE_PATH,
-  NOTES_EDIT_PATH,
-  NOTES_LIST_PATH,
+  NOTES_CREATE_PATH_PREFIX,
+  NOTES_EDIT_PATH_PREFIX,
+  NOTES_LIST_PATH_PREFIX,
   PAGE_TYPE,
 } from '@self-notes/utils';
 
 const routes: Routes = [
   {
-    path: NOTES_LIST_PATH.slice(1),
+    path: NOTES_LIST_PATH_PREFIX,
     component: RemoteComponent,
     data: {
       page: PAGE_TYPE.list,
@@ -19,7 +19,7 @@ const routes: Routes = [
     canActivate: [noAuthGuard],
   },
   {
-    path: NOTES_CREATE_PATH.slice(1),
+    path: NOTES_CREATE_PATH_PREFIX,
     component: RemoteComponent,
     data: {
       page: PAGE_TYPE.create,
@@ -27,7 +27,7 @@ const routes: Routes = [
     canActivate: [noAuthGuard],
   },
   {
-    path: `${NOTES_EDIT_PATH.slice(1)}/:noteId`,
+    path: `${NOTES_EDIT_PATH_PREFIX}/:noteId`,
     component: RemoteComponent,
     data: {
       page: PAGE_TYPE.edit,

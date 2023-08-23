@@ -28,8 +28,6 @@ import { GOOGLE_CLIENT_ID, GOOGLE_SCOPES } from '@self-notes/utils';
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
-        autoLogin: false,
-        oneTapEnabled: false,
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
