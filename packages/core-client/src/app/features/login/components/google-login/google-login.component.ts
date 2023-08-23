@@ -70,7 +70,7 @@ export class GoogleLoginComponent implements OnInit, OnDestroy {
         catchError((err) => {
           this.notificationService.showErrorNotification(err?.message || err);
 
-          return EMPTY;
+          return of(true);
         }),
         takeUntil(this.destroy$)
       )

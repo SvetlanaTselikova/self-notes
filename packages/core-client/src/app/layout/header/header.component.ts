@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { BehaviorSubject, catchError, map, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, catchError, from, lastValueFrom, map, of, switchMap, take, tap } from 'rxjs';
 import { UserProfileService } from '../../core/services/user.profile';
 import { AuthService } from '../../auth/services/auth.service';
 import { Router } from '@angular/router';
@@ -43,7 +43,7 @@ export class HeaderComponent implements OnInit {
       .authenticationControllerLogOut()
       .pipe(
         take(1),
-        switchMap(() => this.socialAuthService.signOut()),
+        switchMap(() => from(this.socialAuthService.signOut()).pipe(catchError(() => of(true)))),
         tap(() => {
           this.logoutInProgress$.next(false);
           this.userProfileService.resetUserProfile();

@@ -121,13 +121,13 @@ import { SocialLoginModule } from '@abacritt/angularx-social-login';
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
-        autoLogin: false,
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(GOOGLE_CLIENT_ID, {
               scopes: GOOGLE_SCOPES,
-              oneTapEnabled: false
+              oneTapEnabled: false, 
+              prompt: ''
             }),
           },
         ],
