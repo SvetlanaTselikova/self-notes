@@ -11,6 +11,11 @@ import { LoginModule, RemoteModule } from './features';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {
+  GoogleLoginProvider,
+  SocialAuthServiceConfig,
+} from '@abacritt/angularx-social-login';
+import { GOOGLE_CLIENT_ID, GOOGLE_SCOPES } from '@self-notes/utils';
+import {
   fetchUserProfile,
   authConfigFactory,
   subcribeCommands,
@@ -38,6 +43,7 @@ import {
 } from './core/query-handlers';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { SocialLoginModule } from '@abacritt/angularx-social-login';
+
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, PageNotFoundComponent],
@@ -111,6 +117,24 @@ import { SocialLoginModule } from '@abacritt/angularx-social-login';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
+    },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(GOOGLE_CLIENT_ID, {
+              scopes: GOOGLE_SCOPES,
+              oneTapEnabled: false
+            }),
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        },
+      } as SocialAuthServiceConfig,
     },
   ],
   bootstrap: [AppComponent],

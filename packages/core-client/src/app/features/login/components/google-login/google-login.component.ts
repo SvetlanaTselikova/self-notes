@@ -8,9 +8,9 @@ import {
   Subject,
   catchError,
   from,
+  of,
   switchMap,
   takeUntil,
-  throwError,
 } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'packages/core-client/src/app/auth/services/auth.service';
@@ -63,7 +63,9 @@ export class GoogleLoginComponent implements OnInit, OnDestroy {
                   )
               )
             );
-          } else return throwError(() => new Error('User is not found'));
+          };
+        
+          return of(true)
         }),
         catchError((err) => {
           this.notificationService.showErrorNotification(err?.message || err);

@@ -8,11 +8,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { GoogleLoginComponent } from './components';
 import {
-  GoogleLoginProvider,
   GoogleSigninButtonModule,
-  SocialAuthServiceConfig,
 } from '@abacritt/angularx-social-login';
-import { GOOGLE_CLIENT_ID, GOOGLE_SCOPES } from '@self-notes/utils';
 
 @NgModule({
   imports: [
@@ -25,22 +22,7 @@ import { GOOGLE_CLIENT_ID, GOOGLE_SCOPES } from '@self-notes/utils';
     GoogleSigninButtonModule,
   ],
   providers: [
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(GOOGLE_CLIENT_ID, {
-              scopes: GOOGLE_SCOPES,
-            }),
-          },
-        ],
-        onError: (err) => {
-          console.error(err);
-        },
-      } as SocialAuthServiceConfig,
-    },
+
   ],
   declarations: [LoginComponent, GoogleLoginComponent],
 })

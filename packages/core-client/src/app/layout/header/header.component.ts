@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { BehaviorSubject, catchError, map, take, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, switchMap, take, tap } from 'rxjs';
 import { UserProfileService } from '../../core/services/user.profile';
 import { AuthService } from '../../auth/services/auth.service';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import {
   NOTES_CREATE_PATH,
   NOTES_LIST_PATH,
 } from '@self-notes/utils';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +21,8 @@ export class HeaderComponent implements OnInit {
     public breakpointObserver: BreakpointObserver,
     protected userProfileService: UserProfileService,
     protected authService: AuthService,
-    protected router: Router
+    protected router: Router,
+    private socialAuthService: SocialAuthService
   ) {}
 
   listPath = NOTES_LIST_PATH;
@@ -41,6 +43,7 @@ export class HeaderComponent implements OnInit {
       .authenticationControllerLogOut()
       .pipe(
         take(1),
+        switchMap(() => this.socialAuthService.signOut()),
         tap(() => {
           this.logoutInProgress$.next(false);
           this.userProfileService.resetUserProfile();
