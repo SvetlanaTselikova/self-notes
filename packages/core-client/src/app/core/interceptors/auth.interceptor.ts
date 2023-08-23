@@ -40,6 +40,11 @@ export class AuthInterceptor implements HttpInterceptor {
             })
           );
         }
+
+        if (!request.url.includes('refresh')) {
+          this.notificationService.showErrorNotification(error?.message);
+        }
+
         return EMPTY;
       })
     );
