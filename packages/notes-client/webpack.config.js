@@ -22,11 +22,15 @@ function getClientEnvironment() {
     }, {}),
   };
 }
-const definePlugin = new webpack.DefinePlugin();
+const definePlugin = new webpack.DefinePlugin(getClientEnvironment());
 // Nx plugins for webpack to build config object from Nx options and context.
 module.exports = composePlugins(
   // definePlugin,
   withNx(),
   withReact(),
-  withModuleFederation(config)
+  withModuleFederation(config),
+  (config, { options, context }) => {
+    config.plugins.push(definePlugin);
+    return config;
+  }
 );
