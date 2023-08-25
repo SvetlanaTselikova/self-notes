@@ -19,24 +19,24 @@ Pet project for CRUD notes **microfrontend** application using Webpack **Module 
 
 ## Applications
 
-- api-gate
+- api-gate:
 **CRUD api** app for notes actions based on Nest js and typeorm. 
 
-- core-client
+- core-client:
 **Core microfrontend** application based on Angular. All child applications will be built into it. 
 
-- notes-client
+- notes-client:
 **Child microfrontend** application based on React.
 
 ## Shared Libraries
 
-- client-message-bus
+- client-message-bus:
 Message bus lib for **communication** between child notes-client app and core application. Message bus based on rxjs.
 
-- database
+- database:
 Library with db **entities, migrations and types**.
 
-- utils
+- utils:
 Common application utils lib.
 
 ## Local run
