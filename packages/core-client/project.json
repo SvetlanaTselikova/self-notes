@@ -17,8 +17,7 @@
         "tsConfig": "packages/core-client/tsconfig.app.json",
         "assets": [
           "packages/core-client/src/favicon.ico",
-          "packages/core-client/src/assets",
-          "packages/core-client/src/manifest.webmanifest"
+          "packages/core-client/src/assets"
         ],
         "styles": [
           "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
@@ -27,9 +26,7 @@
         "scripts": [],
         "customWebpackConfig": {
           "path": "packages/core-client/webpack.config.js"
-        },
-        "serviceWorker": true,
-        "ngswConfigPath": "packages/core-client/ngsw-config.json"
+        }
       },
       "configurations": {
         "production": {
