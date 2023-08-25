@@ -17,7 +17,7 @@ services:
     extends:
       file: docker-compose.app-base.yaml
       service: nx-app-base
-    command: npm run api-gate:dev:docker
+    command: ["sh", "-c", "npm run typeorm:run && npm run api-gate:dev:docker"]
     ports:
       - 3000:3000 
     environment:

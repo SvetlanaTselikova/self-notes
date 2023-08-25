@@ -6,6 +6,4 @@ COPY . .
 
 RUN npm install
 
-RUN npm run typeorm:run
-
 CMD ["npm", "run", "start", "app-1"]
